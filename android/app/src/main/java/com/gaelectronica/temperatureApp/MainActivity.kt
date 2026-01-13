@@ -1,4 +1,4 @@
-package com.temperatura
+package com.gaelectronica.temperatureApp
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

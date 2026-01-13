@@ -1,4 +1,4 @@
-package com.temperatura
+package com.gaelectronica.temperatureApp
 
 import android.app.Application
 import com.facebook.react.PackageList
