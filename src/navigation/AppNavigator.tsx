@@ -1,13 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Image,
-  ImageSourcePropType,
-} from 'react-native';
+import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
 
 // Importar tipos
 import { RootTabParamList } from '../types/navigation.types';
@@ -20,28 +14,6 @@ import ExplanationScreen from '../screens/ExplanationScreen';
 // Crear el tab navigator con tipos
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-// Componente para la pestaña con texto
-interface TabLabelProps {
-  focused: boolean;
-  title: string;
-}
-
-const TabLabel: React.FC<TabLabelProps> = ({ focused, title }) => {
-  return (
-    <View style={styles.tabLabelContainer}>
-      <Text
-        style={[
-          styles.tabLabelText,
-          focused ? styles.tabLabelTextActive : styles.tabLabelTextInactive,
-        ]}
-      >
-        {title}
-      </Text>
-      {focused && <View style={styles.activeIndicator} />}
-    </View>
-  );
-};
-
 // Componente para el indicador de pestaña con imagen
 interface TabIconProps {
   focused: boolean;
@@ -53,7 +25,6 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, label }) => {
   const getIconSource = (): ImageSourcePropType => {
     switch (label) {
       case 'Inicio':
-        // Para imágenes locales
         return require('../assets/images/home.png');
       case 'Convertion':
         return require('../assets/images/temperature.png');
@@ -96,19 +67,6 @@ const AppNavigator = () => {
 
             return <TabIcon focused={focused} label={label} />;
           },
-          tabBarLabel: ({ focused }) => {
-            let title = '';
-
-            if (route.name === 'Home') {
-              title = 'Inicio';
-            } else if (route.name === 'Convertion') {
-              title = 'Conversión';
-            } else if (route.name === 'Explanation') {
-              title = 'Explicación';
-            }
-
-            return <TabLabel focused={focused} title={title} />;
-          },
           tabBarActiveTintColor: '#2196F3',
           tabBarInactiveTintColor: '#666',
           tabBarStyle: {
@@ -144,7 +102,7 @@ const AppNavigator = () => {
           name="Home"
           component={HomeScreen}
           options={{
-            title: 'Inicio Principal',
+            title: 'Inicio',
             headerTitle: 'Inicio',
           }}
         />
@@ -199,16 +157,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabIconImage: {
-    width: 150, // Tamaño exacto que quieres
+    width: 150, // Tamaño más realista para íconos
     height: 150,
   },
   tabIconImageActive: {
-    tintColor: '#2196F3', // Opcional: cambiar color cuando está activo
-    opacity: 1,
+    // Sin tintColor para mantener colores originales
+    opacity: 1, // Mantener opacidad completa
   },
   tabIconImageInactive: {
-    tintColor: '#666666', // Opcional: cambiar color cuando está inactivo
-    opacity: 0.7,
+    // Sin tintColor para mantener colores originales
+    opacity: 0.5, // Solo reducir opacidad, no cambiar color
   },
 });
 
