@@ -1,5 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 
@@ -15,6 +22,7 @@ const { width } = Dimensions.get('window');
 
 const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
   const { t } = useTranslation();
+  const [showFullTable, setShowFullTable] = useState(false);
 
   const data = loadTemperatureScalesData();
   const {
@@ -26,7 +34,7 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
   } = data;
 
   const renderScaleCard = (scale: TemperatureScaleData) => (
-    <Card key={scale.id}>
+    <Card key={scale.id} style={styles.scaleCard}>
       <View style={styles.cardHeader}>
         <View style={[styles.symbolBadge, { backgroundColor: scale.color }]}>
           <Text style={styles.symbolText}>{scale.symbol}</Text>
@@ -47,7 +55,9 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
         <Text style={styles.sectionTitle}>📌 {t('explanation.keyPoints')}</Text>
         {scale.keyPoints.map((point, index) => (
           <View key={index} style={styles.pointItem}>
-            <Text style={styles.bullet}>•</Text>
+            <View style={styles.bulletContainer}>
+              <Text style={styles.bullet}>•</Text>
+            </View>
             <Text style={styles.pointText}>{point}</Text>
           </View>
         ))}
@@ -69,59 +79,131 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
     </Card>
   );
 
-  const renderComparisonTable = () => (
-    <Card style={styles.comparisonCard}>
-      <Text style={styles.comparisonTitle}>
-        📊 {t('explanation.comparison.title')}
-      </Text>
-      <Text style={styles.comparisonSubtitle}>
-        {t('explanation.comparison.subtitle')}
-      </Text>
+  const renderComparisonTable = () => {
+    const tableWidth = Math.max(width, temperatureScales.length * 100 + 200);
+    const rowHeight = 65;
+    const headerHeight = 70;
+    const visibleRows = showFullTable ? commonTemperatures.length : 3;
+    const tableHeight = headerHeight + visibleRows * rowHeight;
 
-      <View style={styles.table}>
-        <View style={styles.tableHeader}>
-          <Text style={[styles.headerCell, styles.firstColumn]}>
-            {t('explanation.comparison.temperature')}
-          </Text>
-          {temperatureScales.map(scale => (
-            <View key={scale.id} style={styles.headerScaleCell}>
-              <Text style={styles.headerScaleSymbol}>{scale.symbol}</Text>
-            </View>
-          ))}
+    return (
+      <Card style={styles.comparisonCard}>
+        <View style={styles.comparisonHeader}>
+          <Text style={styles.comparisonIcon}>📊</Text>
+          <View style={styles.comparisonTitleContainer}>
+            <Text style={styles.comparisonSubtitle}>
+              {t('explanation.comparison.subtitle')}
+            </Text>
+          </View>
+
+          <TouchableOpacity
+            style={styles.toggleTableButton}
+            onPress={() => setShowFullTable(!showFullTable)}
+          >
+            <Text style={styles.toggleTableIcon}>
+              {showFullTable ? '⬆️' : '⬇️'}
+            </Text>
+            <Text style={styles.toggleTableText}>
+              {showFullTable
+                ? t('explanation.table.showLess')
+                : t('explanation.table.showFull')}
+            </Text>
+          </TouchableOpacity>
         </View>
 
-        {commonTemperatures.map((temp, index) => {
-          const convertedValues = convertToAllScales(temp.celsius);
-          return (
-            <View
-              key={index}
-              style={[styles.tableRow, index % 2 === 0 && styles.tableRowEven]}
-            >
-              <View style={[styles.tableCell, styles.firstColumn]}>
-                <Text style={styles.tempName}>{temp.name}</Text>
-                <Text style={styles.tempCelsius}>({temp.celsius}°C)</Text>
-              </View>
-
-              {temperatureScales.map(scale => (
-                <View key={scale.id} style={styles.tableCell}>
-                  <Text style={styles.tempValue}>
-                    {
-                      convertedValues[
-                        scale.name
-                          .toLowerCase()
-                          .replace('grado ', '')
-                          .replace(' ', '')
-                      ]
-                    }
+        {/* Contenedor de la tabla que se expande dinámicamente */}
+        <View style={[styles.tableContainerWrapper, { height: tableHeight }]}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={true}
+            contentContainerStyle={styles.tableScrollContent}
+          >
+            <View style={[styles.tableContainer, { width: tableWidth }]}>
+              {/* Cabecera */}
+              <View style={styles.tableHeader}>
+                <View style={styles.firstColumnHeader}>
+                  <Text style={styles.firstColumnHeaderText}>
+                    {t('explanation.comparison.temperature')}
                   </Text>
                 </View>
-              ))}
+                {temperatureScales.map(scale => (
+                  <View key={scale.id} style={styles.headerScaleCell}>
+                    <View
+                      style={[
+                        styles.smallSymbolBadge,
+                        { backgroundColor: scale.color },
+                      ]}
+                    >
+                      <Text style={styles.smallSymbolText}>{scale.symbol}</Text>
+                    </View>
+                  </View>
+                ))}
+              </View>
+
+              {/* Filas de datos - mostrar solo algunas temperaturas por defecto */}
+              {(showFullTable
+                ? commonTemperatures
+                : commonTemperatures.slice(0, 3)
+              ).map((temp, index) => {
+                const convertedValues = convertToAllScales(temp.celsius);
+                return (
+                  <View
+                    key={index}
+                    style={[
+                      styles.tableRow,
+                      index % 2 === 0 && styles.tableRowEven,
+                    ]}
+                  >
+                    <View style={styles.firstColumnCell}>
+                      <Text style={styles.tempName}>{temp.name}</Text>
+                      <Text style={styles.tempCelsius}>({temp.celsius}°C)</Text>
+                    </View>
+
+                    {temperatureScales.map(scale => {
+                      // Crea la clave para buscar en convertedValues
+                      const scaleKey = scale.name
+                        .toLowerCase()
+                        .replace('grado ', '')
+                        .replace(/[^a-z0-9]/g, ''); // Remueve caracteres no alfanuméricos
+
+                      const valueString = convertedValues[scaleKey];
+
+                      return (
+                        <View key={scale.id} style={styles.tableCell}>
+                          <Text style={styles.tempValue}>
+                            {valueString || 'N/A'}
+                          </Text>
+                        </View>
+                      );
+                    })}
+                  </View>
+                );
+              })}
             </View>
-          );
-        })}
-      </View>
-    </Card>
-  );
+          </ScrollView>
+        </View>
+
+        {/* Instrucción de scroll horizontal */}
+        <View style={styles.scrollInstruction}>
+          <Text style={styles.scrollInstructionIcon}>↔️</Text>
+          <Text style={styles.scrollInstructionText}>
+            {t('explanation.table.scrollInstruction')}
+          </Text>
+        </View>
+
+        {/* Indicador de más elementos (solo cuando NO está expandido) */}
+        {!showFullTable && commonTemperatures.length > 3 && (
+          <View style={styles.moreItemsIndicator}>
+            <Text style={styles.moreItemsText}>
+              {t('explanation.table.moreItems', {
+                count: commonTemperatures.length - 3,
+              })}
+            </Text>
+          </View>
+        )}
+      </Card>
+    );
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -129,47 +211,72 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
+        {/* Título y subtítulo en Card azul */}
         <Card style={styles.titleCard}>
-          <Text style={styles.title}>🌡️ {t('explanation.title')}</Text>
-          <Text style={styles.subtitle}>
-            {t('explanation.subtitle', {
+          <View style={styles.titleContent}>
+            <Text style={styles.titleIcon}>🌡️</Text>
+            <Text style={styles.titleText}>{t('explanation.title')}</Text>
+            <Text style={styles.subtitleText}>
+              {t('explanation.subtitle', {
+                count: temperatureScales.length,
+              })}
+            </Text>
+            <Text style={styles.introText}>{t('explanation.intro')}</Text>
+          </View>
+        </Card>
+
+        {/* Introducción */}
+        <Card style={styles.introHeroCard}>
+          <View style={styles.introContent}>
+            <Text style={styles.introIcon}>📖</Text>
+            <Text style={styles.introHeroTitle}>{introText.title}</Text>
+            <Text style={styles.introHeroText}>{introText.description}</Text>
+          </View>
+        </Card>
+
+        {/* Sección de escalas */}
+        <View style={styles.sectionHeader}>
+          <Text style={styles.sectionHeaderTitle}>
+            📚{' '}
+            {t('explanation.sectionScales', {
               count: temperatureScales.length,
             })}
           </Text>
-          <Text style={styles.introText}>{t('explanation.intro')}</Text>
-        </Card>
-
-        <Card style={styles.introCard}>
-          <Text style={styles.introCardTitle}>{introText.title}</Text>
-          <Text style={styles.introCardText}>{introText.description}</Text>
-        </Card>
-
-        <Text style={styles.sectionHeader}>
-          📚{' '}
-          {t('explanation.sectionScales', {
-            count: temperatureScales.length,
-          })}
-        </Text>
+          <Text style={styles.sectionHeaderSubtitle}>
+            {t('explanation.intro')}
+          </Text>
+        </View>
 
         {temperatureScales.map(renderScaleCard)}
 
+        {/* Tabla de comparación */}
         {renderComparisonTable()}
 
+        {/* Curiosidades */}
         <Card style={styles.curiositiesCard}>
-          <Text style={styles.curiositiesTitle}>
-            🔍 {t('explanation.curiosities')}
-          </Text>
+          <View style={styles.curiositiesHeader}>
+            <Text style={styles.curiositiesIcon}>🔍</Text>
+            <Text style={styles.curiositiesTitle}>
+              {t('explanation.curiosities')}
+            </Text>
+          </View>
 
-          {curiosities.map((curiosity, index) => (
-            <View key={index} style={styles.curiosityItem}>
-              <Text style={styles.curiosityIcon}>{curiosity.icon}</Text>
-              <Text style={styles.curiosityText}>{curiosity.text}</Text>
-            </View>
-          ))}
+          <View style={styles.curiositiesGrid}>
+            {curiosities.map((curiosity, index) => (
+              <View key={index} style={styles.curiosityCard}>
+                <Text style={styles.curiosityCardIcon}>{curiosity.icon}</Text>
+                <Text style={styles.curiosityCardText}>{curiosity.text}</Text>
+              </View>
+            ))}
+          </View>
         </Card>
 
+        {/* Nota final */}
         <Card style={styles.finalNoteCard}>
-          <Text style={styles.finalNoteTitle}>{finalNote.title}</Text>
+          <View style={styles.finalNoteHeader}>
+            <Text style={styles.finalNoteIcon}>✨</Text>
+            <Text style={styles.finalNoteTitle}>{finalNote.title}</Text>
+          </View>
           <Text style={styles.finalNoteText}>{finalNote.text}</Text>
         </Card>
 
@@ -186,98 +293,133 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
   );
 };
 
-// Estilos (igual que antes, pero más organizados)
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
   scrollContainer: {
-    padding: 16,
-    paddingBottom: 32,
+    padding: 20,
+    paddingBottom: 40,
   },
   titleCard: {
-    marginBottom: 20,
-    alignItems: 'center',
+    marginBottom: 25,
     backgroundColor: '#2196F3',
-    paddingVertical: 24,
+    borderRadius: 20,
+    padding: 30,
+    elevation: 5,
+    shadowColor: '#2196F3',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
-  title: {
-    fontSize: 28,
+  titleContent: {
+    alignItems: 'center',
+  },
+  titleIcon: {
+    fontSize: 40,
+    marginBottom: 15,
+  },
+  titleText: {
+    fontSize: 32,
     fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
-    marginBottom: 8,
+    marginBottom: 10,
   },
-  subtitle: {
+  subtitleText: {
+    fontSize: 18,
+    color: 'rgba(255, 255, 255, 0.95)',
+    textAlign: 'center',
+    marginBottom: 15,
+    lineHeight: 24,
+  },
+  introText: {
+    fontSize: 15,
+    color: 'rgba(255, 255, 255, 0.85)',
+    textAlign: 'center',
+    lineHeight: 22,
+    fontStyle: 'italic',
+  },
+  introHeroCard: {
+    marginBottom: 25,
+    backgroundColor: '#4CAF50',
+    borderRadius: 20,
+    padding: 25,
+    elevation: 5,
+    shadowColor: '#4CAF50',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+  },
+  introContent: {
+    alignItems: 'center',
+  },
+  introIcon: {
+    fontSize: 40,
+    marginBottom: 15,
+    color: 'white',
+  },
+  introHeroTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  introHeroText: {
     fontSize: 16,
     color: 'rgba(255, 255, 255, 0.95)',
     textAlign: 'center',
-    marginBottom: 12,
-  },
-  introText: {
-    fontSize: 14,
-    color: 'rgba(255, 255, 255, 0.85)',
-    textAlign: 'center',
-    fontStyle: 'italic',
-  },
-  introCard: {
-    marginBottom: 20,
-    backgroundColor: '#E3F2FD',
-  },
-  introCardTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1976D2',
-    marginBottom: 12,
-  },
-  introCardText: {
-    fontSize: 14,
-    color: '#333',
-    lineHeight: 20,
-    marginBottom: 12,
-  },
-  introPoints: {
-    marginLeft: 8,
-  },
-  introPoint: {
-    fontSize: 13,
-    color: '#555',
-    lineHeight: 20,
-    marginBottom: 6,
-  },
-  bold: {
-    fontWeight: 'bold',
+    lineHeight: 24,
   },
   sectionHeader: {
-    fontSize: 22,
+    marginBottom: 25,
+  },
+  sectionHeaderTitle: {
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 16,
-    marginTop: 8,
-    paddingLeft: 8,
+    marginBottom: 5,
+  },
+  sectionHeaderSubtitle: {
+    fontSize: 14,
+    color: '#666',
+    lineHeight: 20,
   },
   scaleCard: {
     marginBottom: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 25,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
     borderLeftWidth: 6,
     borderLeftColor: '#2196F3',
-    padding: 16,
   },
   cardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: 20,
   },
   symbolBadge: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 12,
+    marginRight: 15,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   symbolText: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
     color: 'white',
   },
@@ -285,253 +427,379 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scaleName: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 4,
   },
   inventor: {
-    fontSize: 14,
+    fontSize: 15,
     color: '#666',
     fontStyle: 'italic',
   },
   description: {
-    fontSize: 14,
+    fontSize: 15,
     color: '#444',
-    lineHeight: 20,
-    marginBottom: 16,
+    lineHeight: 22,
+    marginBottom: 20,
+    textAlign: 'justify',
   },
   section: {
-    marginBottom: 16,
+    marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     color: '#333',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   pointItem: {
     flexDirection: 'row',
-    marginBottom: 6,
+    marginBottom: 10,
     alignItems: 'flex-start',
   },
+  bulletContainer: {
+    width: 24,
+    alignItems: 'center',
+  },
   bullet: {
-    fontSize: 16,
-    color: '#666',
-    marginRight: 8,
-    marginTop: 2,
+    fontSize: 18,
+    color: '#2196F3',
+    fontWeight: 'bold',
   },
   pointText: {
     flex: 1,
-    fontSize: 13,
+    fontSize: 14,
     color: '#555',
-    lineHeight: 18,
+    lineHeight: 20,
   },
   formulaCard: {
     backgroundColor: '#F5F5F5',
-    padding: 12,
+    padding: 16,
+    borderRadius: 12,
     marginTop: 4,
-  },
-  formulaText: {
-    fontSize: 16,
-    fontFamily: 'monospace',
-    color: '#D32F2F',
-    textAlign: 'center',
-  },
-  usageContainer: {
-    backgroundColor: '#E8F5E9',
-    padding: 12,
-    borderRadius: 6,
-    marginTop: 4,
-  },
-  usageText: {
-    fontSize: 14,
-    color: '#2E7D32',
-    fontStyle: 'italic',
-    textAlign: 'center',
-  },
-  historyCard: {
-    marginBottom: 20,
-    backgroundColor: '#FFF3E0',
-  },
-  historyTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#E65100',
-    marginBottom: 16,
-  },
-  historyItem: {
-    flexDirection: 'row',
-    marginBottom: 12,
-    alignItems: 'flex-start',
-  },
-  historyYear: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#FF9800',
-    width: 60,
-    marginRight: 12,
-  },
-  historyText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#5D4037',
-    lineHeight: 18,
-  },
-  comparisonCard: {
-    marginBottom: 20,
-    backgroundColor: '#F8F9FA',
     borderWidth: 1,
     borderColor: '#E0E0E0',
   },
-  comparisonTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    marginBottom: 8,
+  formulaText: {
+    fontSize: 18,
+    fontFamily: 'monospace',
+    color: '#D32F2F',
     textAlign: 'center',
+    fontWeight: '600',
+  },
+  usageContainer: {
+    backgroundColor: '#E8F5E9',
+    padding: 16,
+    borderRadius: 12,
+    marginTop: 4,
+    borderLeftWidth: 4,
+    borderLeftColor: '#4CAF50',
+  },
+  usageText: {
+    fontSize: 15,
+    color: '#2E7D32',
+    fontStyle: 'italic',
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  comparisonCard: {
+    marginBottom: 25,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  comparisonHeader: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 20,
+  },
+  comparisonIcon: {
+    fontSize: 28,
+    marginRight: 15,
+    marginTop: 4,
+  },
+  comparisonTitleContainer: {
+    flex: 1,
   },
   comparisonSubtitle: {
     fontSize: 14,
     color: '#666',
-    textAlign: 'center',
-    marginBottom: 16,
+    lineHeight: 20,
   },
-  table: {
+  toggleTableButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E3F2FD',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 20,
+    marginLeft: 10,
+  },
+  toggleTableIcon: {
+    fontSize: 16,
+    marginRight: 6,
+  },
+  toggleTableText: {
+    fontSize: 12,
+    color: '#2196F3',
+    fontWeight: '600',
+  },
+  tableContainerWrapper: {
+    marginBottom: 10,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: '#E0E0E0',
-    borderRadius: 8,
     overflow: 'hidden',
+  },
+  tableScrollContent: {
+    // La altura será controlada por el contenedor wrapper
+  },
+  tableContainer: {
+    backgroundColor: 'white',
   },
   tableHeader: {
     flexDirection: 'row',
-    backgroundColor: '#2196F3',
-    borderBottomWidth: 1,
-    borderBottomColor: '#1976D2',
+    backgroundColor: '#F8F9FA',
+    borderBottomWidth: 2,
+    borderBottomColor: '#E0E0E0',
+    minHeight: 70,
   },
-  headerCell: {
-    padding: 12,
-    textAlign: 'center',
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  firstColumn: {
-    width: width * 0.25,
-  },
-  headerScaleCell: {
-    width: (width * 0.75) / 8,
-    padding: 8,
+  firstColumnHeader: {
+    width: 160,
+    padding: 15,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#2196F3',
   },
-  headerScaleSymbol: {
-    color: 'white',
-    fontWeight: 'bold',
+  firstColumnHeaderText: {
     fontSize: 14,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  headerScaleCell: {
+    width: 90,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderLeftWidth: 1,
+    borderLeftColor: '#E0E0E0',
+  },
+  smallSymbolBadge: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
+  },
+  smallSymbolText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
   },
   tableRow: {
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: '#F0F0F0',
+    minHeight: 65,
   },
   tableRowEven: {
     backgroundColor: '#F8F9FA',
   },
-  tableCell: {
-    width: (width * 0.75) / 8,
-    padding: 10,
+  firstColumnCell: {
+    width: 160,
+    padding: 12,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: '#F0F7FF',
+    borderRightWidth: 1,
+    borderRightColor: '#E0E0E0',
+  },
+  tableCell: {
+    width: 90,
+    padding: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderLeftWidth: 1,
+    borderLeftColor: '#E0E0E0',
   },
   tempName: {
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: 'bold',
     color: '#333',
     textAlign: 'center',
-    marginBottom: 2,
+    marginBottom: 4,
+    lineHeight: 16,
   },
   tempCelsius: {
-    fontSize: 10,
+    fontSize: 12,
     color: '#666',
-    textAlign: 'center',
-  },
-  tempValue: {
-    fontSize: 10,
-    color: '#333',
-    textAlign: 'center',
-  },
-  curiositiesCard: {
-    marginBottom: 20,
-    backgroundColor: '#E8EAF6',
-  },
-  curiositiesTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#3949AB',
-    marginBottom: 16,
-    textAlign: 'center',
-  },
-  curiosityItem: {
-    flexDirection: 'row',
-    marginBottom: 12,
-    alignItems: 'flex-start',
-  },
-  curiosityIcon: {
-    fontSize: 20,
-    marginRight: 12,
-    marginTop: 2,
-  },
-  curiosityText: {
-    flex: 1,
-    fontSize: 13,
-    color: '#333',
-    lineHeight: 18,
-  },
-  finalNoteCard: {
-    marginBottom: 20,
-    backgroundColor: '#E0F7FA',
-    padding: 20,
-  },
-  finalNoteTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#00838F',
-    marginBottom: 12,
-    textAlign: 'center',
-  },
-  finalNoteText: {
-    fontSize: 14,
-    color: '#006064',
-    lineHeight: 20,
     textAlign: 'center',
     fontStyle: 'italic',
   },
-  bottomSpacer: {
-    height: 30,
+  tempValue: {
+    fontSize: 14,
+    color: '#333',
+    fontWeight: '600',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  moreItemsIndicator: {
+    padding: 10,
+    alignItems: 'center',
+    backgroundColor: '#FFF3E0',
+    marginTop: 5,
+    borderRadius: 8,
+  },
+  moreItemsText: {
+    fontSize: 12,
+    color: '#FF9800',
+    fontStyle: 'italic',
+  },
+  scrollInstruction: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#F0F7FF',
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  scrollInstructionIcon: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+  scrollInstructionText: {
+    fontSize: 12,
+    color: '#2196F3',
+    fontWeight: '500',
+  },
+  curiositiesCard: {
+    marginBottom: 25,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 25,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  curiositiesHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  curiositiesIcon: {
+    fontSize: 28,
+    marginRight: 15,
+  },
+  curiositiesTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  curiositiesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+  },
+  curiosityCard: {
+    width: width > 400 ? '48%' : '100%',
+    backgroundColor: '#F3E5F5',
+    borderRadius: 15,
+    padding: 20,
+    marginBottom: 15,
+    alignItems: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+  },
+  curiosityCardIcon: {
+    fontSize: 30,
+    marginBottom: 12,
+  },
+  curiosityCardText: {
+    fontSize: 13,
+    color: '#333',
+    textAlign: 'center',
+    lineHeight: 18,
+  },
+  finalNoteCard: {
+    marginBottom: 25,
+    backgroundColor: '#E0F7FA',
+    borderRadius: 20,
+    padding: 25,
+    borderLeftWidth: 6,
+    borderLeftColor: '#00BCD4',
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  finalNoteHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 15,
+    justifyContent: 'center',
+  },
+  finalNoteIcon: {
+    fontSize: 28,
+    marginRight: 12,
+  },
+  finalNoteTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#00838F',
+  },
+  finalNoteText: {
+    fontSize: 15,
+    color: '#006064',
+    lineHeight: 22,
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
   footer: {
     alignItems: 'center',
-    paddingTop: 20,
+    paddingTop: 25,
     borderTopWidth: 1,
     borderTopColor: '#E0E0E0',
   },
   footerText: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#666',
     textAlign: 'center',
     marginBottom: 8,
   },
   footerSubtext: {
-    fontSize: 11,
+    fontSize: 12,
     color: '#999',
     textAlign: 'center',
     marginBottom: 8,
     fontStyle: 'italic',
   },
   footerVersion: {
-    fontSize: 10,
+    fontSize: 11,
     color: '#BBB',
     textAlign: 'center',
+  },
+  bottomSpacer: {
+    height: 20,
   },
 });
 

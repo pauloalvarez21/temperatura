@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -17,41 +19,84 @@ const { width } = Dimensions.get('window');
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { t } = useTranslation();
-  // 🔹 Features (texto desde i18n)
+  const featuresScrollRef = useRef<ScrollView>(null);
+  const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
+
+  // 🔹 Features
   const features = [
     {
       icon: '🌡️',
       title: t('home.features.items.scales.title'),
       description: t('home.features.items.scales.description'),
+      bgColor: '#E3F2FD',
+      textColor: '#1565C0',
     },
     {
       icon: '⚡',
       title: t('home.features.items.fast.title'),
       description: t('home.features.items.fast.description'),
+      bgColor: '#FFF3E0',
+      textColor: '#EF6C00',
     },
     {
       icon: '📊',
       title: t('home.features.items.compare.title'),
       description: t('home.features.items.compare.description'),
+      bgColor: '#E8F5E9',
+      textColor: '#2E7D32',
     },
     {
       icon: '🎯',
       title: t('home.features.items.precision.title'),
       description: t('home.features.items.precision.description'),
+      bgColor: '#F3E5F5',
+      textColor: '#7B1FA2',
     },
   ];
 
-  // 🔹 Temperaturas destacadas (solo labels traducibles)
+  // 🔹 Temperaturas destacadas
   const highlightedTemps = [
-    { temp: '0°C', label: t('home.temps.freeze'), color: '#2196F3' },
-    { temp: '100°C', label: t('home.temps.boil'), color: '#FF5722' },
-    { temp: '37°C', label: t('home.temps.body'), color: '#4CAF50' },
+    {
+      temp: '0°C',
+      label: t('home.temps.freeze'),
+      color: '#2196F3',
+      icon: '❄️',
+    },
+    {
+      temp: '100°C',
+      label: t('home.temps.boil'),
+      color: '#FF5722',
+      icon: '🔥',
+    },
+    { temp: '37°C', label: t('home.temps.body'), color: '#4CAF50', icon: '👤' },
     {
       temp: '-273.15°C',
       label: t('home.temps.absoluteZero'),
       color: '#9C27B0',
+      icon: '⚛️',
     },
   ];
+
+  // 🔹 Handle scroll para actualizar el indicador activo
+  const handleFeaturesScroll = (
+    event: NativeSyntheticEvent<NativeScrollEvent>,
+  ) => {
+    const slideSize = event.nativeEvent.layoutMeasurement.width;
+    const contentOffset = event.nativeEvent.contentOffset.x;
+    const currentIndex = Math.floor(contentOffset / slideSize);
+    setActiveFeatureIndex(currentIndex);
+  };
+
+  // 🔹 Navegar a un slide específico
+  const goToSlide = (index: number) => {
+    if (featuresScrollRef.current) {
+      featuresScrollRef.current.scrollTo({
+        x: index * (width - 64), // 64 = padding horizontal (32 + 32)
+        animated: true,
+      });
+    }
+    setActiveFeatureIndex(index);
+  };
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -59,13 +104,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero */}
+        {/* Hero Section */}
         <Card style={styles.heroCard}>
           <View style={styles.heroContent}>
+            <View style={styles.scaleIconContainer}>
+              <Text style={styles.scaleIcon}>🌡️</Text>
+            </View>
             <Text style={styles.heroTitle}>{t('home.title')}</Text>
-
             <Text style={styles.heroSubtitle}>{t('home.subtitle')}</Text>
-
             <Text style={styles.heroDescription}>{t('home.description')}</Text>
           </View>
         </Card>
@@ -107,21 +153,69 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
 
-        {/* Características */}
+        {/* Características con Carrusel */}
         <Card style={styles.featuresCard}>
           <Text style={styles.sectionTitle}>✨ {t('home.features.title')}</Text>
 
-          <View style={styles.featuresGrid}>
+          <ScrollView
+            ref={featuresScrollRef}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={handleFeaturesScroll}
+            scrollEventThrottle={16}
+            snapToInterval={width - 32} // Ancho de la tarjeta (screen width - padding)
+            decelerationRate="fast"
+            style={styles.featuresScrollView}
+            contentContainerStyle={styles.featuresScrollContent}
+          >
             {features.map((feature, index) => (
-              <View key={index} style={styles.featureItem}>
-                <View style={styles.featureIconContainer}>
-                  <Text style={styles.featureIcon}>{feature.icon}</Text>
+              <View key={index} style={styles.featureSlide}>
+                <View
+                  style={[
+                    styles.featureItem,
+                    { backgroundColor: feature.bgColor },
+                  ]}
+                >
+                  <View
+                    style={[
+                      styles.featureIconContainer,
+                      { backgroundColor: `${feature.textColor}15` },
+                    ]}
+                  >
+                    <Text
+                      style={[styles.featureIcon, { color: feature.textColor }]}
+                    >
+                      {feature.icon}
+                    </Text>
+                  </View>
+                  <Text
+                    style={[styles.featureTitle, { color: feature.textColor }]}
+                  >
+                    {feature.title}
+                  </Text>
+                  <Text style={styles.featureDescription}>
+                    {feature.description}
+                  </Text>
                 </View>
-                <Text style={styles.featureTitle}>{feature.title}</Text>
-                <Text style={styles.featureDescription}>
-                  {feature.description}
-                </Text>
               </View>
+            ))}
+          </ScrollView>
+
+          {/* Puntos indicadores del carrusel */}
+          <View style={styles.paginationContainer}>
+            {features.map((_, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[
+                  styles.paginationDot,
+                  activeFeatureIndex === index
+                    ? styles.paginationDotActive
+                    : styles.paginationDotInactive,
+                ]}
+                onPress={() => goToSlide(index)}
+                activeOpacity={0.7}
+              />
             ))}
           </View>
         </Card>
@@ -136,12 +230,19 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 key={index}
                 style={[
                   styles.tempItem,
-                  { backgroundColor: `${temp.color}15` },
+                  {
+                    backgroundColor: `${temp.color}15`,
+                    borderLeftWidth: 4,
+                    borderLeftColor: temp.color,
+                  },
                 ]}
               >
-                <Text style={[styles.tempValue, { color: temp.color }]}>
-                  {temp.temp}
-                </Text>
+                <View style={styles.tempHeader}>
+                  <Text style={styles.tempIcon}>{temp.icon}</Text>
+                  <Text style={[styles.tempValue, { color: temp.color }]}>
+                    {temp.temp}
+                  </Text>
+                </View>
                 <Text style={styles.tempLabel}>{temp.label}</Text>
               </View>
             ))}
@@ -151,9 +252,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         {/* CTA */}
         <Card style={styles.ctaCard}>
           <Text style={styles.ctaTitle}>{t('home.cta.title')}</Text>
-
           <Text style={styles.ctaDescription}>{t('home.cta.description')}</Text>
-
           <TouchableOpacity
             style={styles.ctaButton}
             onPress={() => navigation.navigate('Convertion')}
@@ -185,16 +284,17 @@ const styles = StyleSheet.create({
     padding: 16,
     paddingBottom: 32,
   },
-  header: {
-    alignItems: 'center',
-    marginBottom: 24,
-    marginTop: 8,
-  },
   heroCard: {
     marginBottom: 20,
     backgroundColor: '#2196F3',
     paddingVertical: 30,
     paddingHorizontal: 24,
+    borderRadius: 20,
+    elevation: 5,
+    shadowColor: '#2196F3',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
   heroContent: {
     alignItems: 'center',
@@ -205,7 +305,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginBottom: 12,
-    fontFamily: 'CHOWFUN_.TTF',
   },
   heroSubtitle: {
     fontSize: 16,
@@ -228,14 +327,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
-    borderRadius: 12,
+    borderRadius: 16,
     marginBottom: 12,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   primaryButton: {
     backgroundColor: '#2196F3',
   },
   secondaryButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#4CAF50',
   },
   actionButtonIcon: {
     fontSize: 32,
@@ -262,6 +366,13 @@ const styles = StyleSheet.create({
   featuresCard: {
     marginBottom: 20,
     backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   sectionTitle: {
     fontSize: 22,
@@ -270,47 +381,84 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: 'center',
   },
-  featuresGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+  featuresScrollView: {
+    marginHorizontal: -16,
+  },
+  featuresScrollContent: {
+    paddingHorizontal: 16,
+  },
+  featureSlide: {
+    width: width - 32, // Ancho de pantalla menos padding
+    paddingHorizontal: 8,
   },
   featureItem: {
-    width: width > 400 ? '48%' : '100%',
     alignItems: 'center',
-    padding: 16,
-    marginBottom: 16,
-    backgroundColor: '#F8F9FA',
-    borderRadius: 12,
+    padding: 20,
+    borderRadius: 16,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    minHeight: 220,
+    justifyContent: 'center',
   },
   featureIconContainer: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#E3F2FD',
+    width: 70,
+    height: 70,
+    borderRadius: 35,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 12,
+    marginBottom: 16,
   },
   featureIcon: {
-    fontSize: 24,
+    fontSize: 28,
   },
   featureTitle: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
-    color: '#2196F3',
-    marginBottom: 8,
+    marginBottom: 10,
     textAlign: 'center',
   },
   featureDescription: {
-    fontSize: 12,
+    fontSize: 13,
     color: '#666',
     textAlign: 'center',
-    lineHeight: 16,
+    lineHeight: 18,
+  },
+  // Estilos para la paginación (puntos)
+  paginationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 20,
+    paddingHorizontal: 16,
+  },
+  paginationDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 6,
+  },
+  paginationDotActive: {
+    backgroundColor: '#2196F3',
+    width: 24,
+    height: 8,
+    borderRadius: 4,
+  },
+  paginationDotInactive: {
+    backgroundColor: '#E0E0E0',
   },
   tempsCard: {
     marginBottom: 20,
     backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 20,
+    elevation: 3,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
   },
   tempsGrid: {
     flexDirection: 'row',
@@ -320,14 +468,28 @@ const styles = StyleSheet.create({
   tempItem: {
     width: width > 400 ? '48%' : '100%',
     alignItems: 'center',
-    padding: 20,
+    padding: 16,
     marginBottom: 12,
     borderRadius: 12,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+  },
+  tempHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+  },
+  tempIcon: {
+    fontSize: 20,
+    marginRight: 8,
   },
   tempValue: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 8,
   },
   tempLabel: {
     fontSize: 14,
@@ -335,64 +497,17 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textAlign: 'center',
   },
-  aboutCard: {
-    marginBottom: 20,
-    backgroundColor: '#FFF3E0',
-  },
-  aboutContent: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-  },
-  aboutIcon: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: '#2196F3',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 16,
-  },
-  aboutIconText: {
-    fontSize: 28,
-  },
-  aboutTextContainer: {
-    flex: 1,
-  },
-  aboutDescription: {
-    fontSize: 14,
-    color: '#5D4037',
-    lineHeight: 20,
-    marginBottom: 16,
-  },
-  aboutStats: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
-    padding: 12,
-    borderRadius: 8,
-  },
-  statItem: {
-    alignItems: 'center',
-  },
-  statNumber: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#2196F3',
-  },
-  statLabel: {
-    fontSize: 12,
-    color: '#795548',
-    marginTop: 4,
-  },
-  statDivider: {
-    width: 1,
-    backgroundColor: '#E0E0E0',
-  },
   ctaCard: {
     marginBottom: 20,
     backgroundColor: '#2196F3',
     padding: 24,
     alignItems: 'center',
+    borderRadius: 20,
+    elevation: 5,
+    shadowColor: '#2196F3',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
   },
   ctaTitle: {
     fontSize: 24,
@@ -450,6 +565,17 @@ const styles = StyleSheet.create({
   },
   bottomSpacer: {
     height: 20,
+  },
+  scaleIconContainer: {
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 15,
+  },
+  scaleIcon: {
+    fontSize: 24,
+    color: '#2196F3',
   },
 });
 

@@ -79,6 +79,12 @@
       "title": "Comparativa de Escalas",
       "subtitle": "Valores equivalentes para temperaturas comunes",
       "temperature": "Temperatura"
+    },
+    "table": {
+      "showFull": "Mostrar tabla completa",
+      "showLess": "Mostrar menos",
+      "moreItems": "... y {{count}} temperaturas más",
+      "scrollInstruction": "Desliza horizontalmente para ver todas las escalas"
     }
   },
   "navigation": {

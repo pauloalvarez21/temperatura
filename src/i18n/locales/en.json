@@ -84,6 +84,12 @@
       "title": "Scale Comparison",
       "subtitle": "Equivalent values for common temperatures",
       "temperature": "Temperature"
+    },
+    "table": {
+      "showFull": "Show full table",
+      "showLess": "Show less",
+      "moreItems": "... and {{count}} more temperatures",
+      "scrollInstruction": "Scroll horizontally to see all scales"
     }
   },
   "navigation": {

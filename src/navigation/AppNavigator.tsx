@@ -131,30 +131,6 @@ const AppNavigator = () => {
 };
 
 const styles = StyleSheet.create({
-  tabLabelContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabLabelText: {
-    fontFamily: 'CHOWFUN',
-    fontSize: 12,
-    fontWeight: '600',
-    marginTop: 2,
-  },
-  tabLabelTextActive: {
-    color: '#2196F3',
-    fontWeight: '700',
-  },
-  tabLabelTextInactive: {
-    color: '#666666',
-  },
-  activeIndicator: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
-    backgroundColor: '#2196F3',
-    marginTop: 4,
-  },
   tabIconContainer: {
     alignItems: 'center',
     justifyContent: 'center',
