@@ -1,0 +1,84 @@
+{
+  "home": {
+    "title": "Conversor de Temperatura",
+    "subtitle": "Una herramienta completa para conversión entre 8 escalas",
+    "description": "Desarrollada para estudiantes, ingenieros y profesionales.",
+    "actions": {
+      "convert": {
+        "title": "Convertir",
+        "subtitle": "Ir al conversor"
+      },
+      "learn": {
+        "title": "Aprender",
+        "subtitle": "Ver escalas"
+      }
+    },
+    "features": {
+      "title": "Características Principales",
+      "items": {
+        "scales": {
+          "title": "8 Escalas",
+          "description": "Kelvin, Celsius, Fahrenheit y más"
+        },
+        "fast": {
+          "title": "Conversión Rápida",
+          "description": "Conversiones instantáneas"
+        },
+        "compare": {
+          "title": "Comparativa",
+          "description": "Tablas y valores comunes"
+        },
+        "precision": {
+          "title": "Precisión",
+          "description": "Hasta 4 decimales"
+        }
+      }
+    },
+    "temps": {
+      "title": "Temperaturas Destacadas",
+      "freeze": "Agua congela",
+      "boil": "Agua hierve",
+      "body": "Cuerpo humano",
+      "absoluteZero": "Cero absoluto"
+    },
+    "cta": {
+      "title": "¿Listo para empezar?",
+      "description": "Explora todas las funcionalidades del conversor",
+      "button": "Comenzar a Convertir →"
+    },
+    "footer": {
+      "rights": "© 2026 Gaelectronica - Todos los derechos reservados",
+      "tool": "Herramienta para conversión de temperatura"
+    }
+  },
+  "conversion": {
+    "title": "Conversor de Temperatura",
+    "subtitle": "Convierte entre 8 escalas diferentes",
+    "valueToConvert": "Valor a convertir",
+    "placeholder": "Ingresa la temperatura",
+    "from": "De",
+    "to": "A",
+    "swap": "Intercambiar",
+    "result": "Resultado",
+    "decimals": "Decimales",
+    "reset": "Reiniciar",
+    "errors": {
+      "invalid": "Valor inválido"
+    }
+  },
+  "explanation": {
+    "title": "Escalas de Temperatura",
+    "subtitle": "Guía completa de las {{count}} escalas principales",
+    "intro": "Desde escalas históricas hasta escalas modernas usadas en ciencia.",
+    "sectionScales": "Las {{count}} Escalas de Temperatura",
+    "keyPoints": "Puntos clave",
+    "formula": "Fórmula principal",
+    "usage": "Uso histórico / actual",
+    "curiosities": "Curiosidades Interesantes",
+    "comparison": {
+      "title": "Comparativa de Escalas",
+      "subtitle": "Valores equivalentes para temperaturas comunes",
+      "temperature": "Temperatura"
+    }
+  }
+}

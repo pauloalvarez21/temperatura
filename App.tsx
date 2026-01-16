@@ -3,7 +3,9 @@ import { StatusBar, StyleSheet } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import AppNavigator from './src/navigation/AppNavigator';
 
-const App: React.FC = () => {
+import './src/i18n';
+
+const App = () => {
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.safeArea}>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+
 import { ExplanationScreenProps } from '../types/navigation.types';
 import Card from '../components/Card';
 import {
@@ -12,157 +14,114 @@ import { TemperatureScaleData } from '../types/temperatureScales';
 const { width } = Dimensions.get('window');
 
 const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
-  // Cargar datos del JSON
+  const { t } = useTranslation();
+
   const data = loadTemperatureScalesData();
   const {
     temperatureScales,
-    historicalEvents,
     commonTemperatures,
     curiosities,
     introText,
     finalNote,
   } = data;
 
-  // Renderizar cada card de escala
-  const renderScaleCard = (scale: TemperatureScaleData) => {
-    return (
-      <Card key={scale.id}>
-        <View style={styles.cardHeader}>
-          <View style={[styles.symbolBadge, { backgroundColor: scale.color }]}>
-            <Text style={styles.symbolText}>{scale.symbol}</Text>
-          </View>
-          <View style={styles.headerContent}>
-            <Text style={styles.scaleName}>
-              {scale.name} ({scale.symbol})
-            </Text>
-            <Text style={styles.inventor}>
-              {scale.inventor} ({scale.year})
-            </Text>
-          </View>
+  const renderScaleCard = (scale: TemperatureScaleData) => (
+    <Card key={scale.id}>
+      <View style={styles.cardHeader}>
+        <View style={[styles.symbolBadge, { backgroundColor: scale.color }]}>
+          <Text style={styles.symbolText}>{scale.symbol}</Text>
         </View>
+        <View style={styles.headerContent}>
+          <Text style={styles.scaleName}>
+            {scale.name} ({scale.symbol})
+          </Text>
+          <Text style={styles.inventor}>
+            {scale.inventor} ({scale.year})
+          </Text>
+        </View>
+      </View>
 
-        <Text style={styles.description}>{scale.description}</Text>
+      <Text style={styles.description}>{scale.description}</Text>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>📌 Puntos Clave:</Text>
-          {scale.keyPoints.map((point, index) => (
-            <View key={index} style={styles.pointItem}>
-              <Text style={styles.bullet}>•</Text>
-              <Text style={styles.pointText}>{point}</Text>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>📌 {t('explanation.keyPoints')}</Text>
+        {scale.keyPoints.map((point, index) => (
+          <View key={index} style={styles.pointItem}>
+            <Text style={styles.bullet}>•</Text>
+            <Text style={styles.pointText}>{point}</Text>
+          </View>
+        ))}
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>🧮 {t('explanation.formula')}</Text>
+        <Card style={styles.formulaCard}>
+          <Text style={styles.formulaText}>{scale.formula}</Text>
+        </Card>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>🌍 {t('explanation.usage')}</Text>
+        <View style={styles.usageContainer}>
+          <Text style={styles.usageText}>{scale.usage}</Text>
+        </View>
+      </View>
+    </Card>
+  );
+
+  const renderComparisonTable = () => (
+    <Card style={styles.comparisonCard}>
+      <Text style={styles.comparisonTitle}>
+        📊 {t('explanation.comparison.title')}
+      </Text>
+      <Text style={styles.comparisonSubtitle}>
+        {t('explanation.comparison.subtitle')}
+      </Text>
+
+      <View style={styles.table}>
+        <View style={styles.tableHeader}>
+          <Text style={[styles.headerCell, styles.firstColumn]}>
+            {t('explanation.comparison.temperature')}
+          </Text>
+          {temperatureScales.map(scale => (
+            <View key={scale.id} style={styles.headerScaleCell}>
+              <Text style={styles.headerScaleSymbol}>{scale.symbol}</Text>
             </View>
           ))}
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🧮 Fórmula principal:</Text>
-          <Card style={styles.formulaCard}>
-            <Text style={styles.formulaText}>{scale.formula}</Text>
-          </Card>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🌍 Uso histórico/actual:</Text>
-          <View style={styles.usageContainer}>
-            <Text style={styles.usageText}>{scale.usage}</Text>
-          </View>
-        </View>
-      </Card>
-    );
-  };
-
-  // Renderizar tabla comparativa
-  const renderComparisonTable = () => {
-    return (
-      <Card style={styles.comparisonCard}>
-        <Text style={styles.comparisonTitle}>📊 Comparativa de Escalas</Text>
-        <Text style={styles.comparisonSubtitle}>
-          Valores equivalentes para temperaturas comunes
-        </Text>
-
-        <View style={styles.table}>
-          <View style={styles.tableHeader}>
-            <Text style={[styles.headerCell, styles.firstColumn]}>
-              Temperatura
-            </Text>
-            {temperatureScales.map(scale => (
-              <View key={scale.id} style={styles.headerScaleCell}>
-                <Text style={styles.headerScaleSymbol}>{scale.symbol}</Text>
+        {commonTemperatures.map((temp, index) => {
+          const convertedValues = convertToAllScales(temp.celsius);
+          return (
+            <View
+              key={index}
+              style={[styles.tableRow, index % 2 === 0 && styles.tableRowEven]}
+            >
+              <View style={[styles.tableCell, styles.firstColumn]}>
+                <Text style={styles.tempName}>{temp.name}</Text>
+                <Text style={styles.tempCelsius}>({temp.celsius}°C)</Text>
               </View>
-            ))}
-          </View>
 
-          {commonTemperatures.map((temp, index) => {
-            const convertedValues = convertToAllScales(temp.celsius);
-            return (
-              <View
-                key={index}
-                style={[
-                  styles.tableRow,
-                  index % 2 === 0 && styles.tableRowEven,
-                ]}
-              >
-                <View style={[styles.tableCell, styles.firstColumn]}>
-                  <Text style={styles.tempName}>{temp.name}</Text>
-                  <Text style={styles.tempCelsius}>({temp.celsius}°C)</Text>
+              {temperatureScales.map(scale => (
+                <View key={scale.id} style={styles.tableCell}>
+                  <Text style={styles.tempValue}>
+                    {
+                      convertedValues[
+                        scale.name
+                          .toLowerCase()
+                          .replace('grado ', '')
+                          .replace(' ', '')
+                      ]
+                    }
+                  </Text>
                 </View>
-
-                {temperatureScales.map(scale => (
-                  <View key={scale.id} style={styles.tableCell}>
-                    <Text style={styles.tempValue}>
-                      {
-                        convertedValues[
-                          scale.name
-                            .toLowerCase()
-                            .replace('grado ', '')
-                            .replace(' ', '')
-                        ]
-                      }
-                    </Text>
-                  </View>
-                ))}
-              </View>
-            );
-          })}
-        </View>
-      </Card>
-    );
-  };
-
-  // Renderizar información histórica
-  const renderHistoricalInfo = () => {
-    return (
-      <Card style={styles.historyCard}>
-        <Text style={styles.historyTitle}>
-          📜 Historia de la Medición de Temperatura
-        </Text>
-
-        {historicalEvents.map((event, index) => (
-          <View key={index} style={styles.historyItem}>
-            <Text style={styles.historyYear}>{event.year}</Text>
-            <Text style={styles.historyText}>{event.event}</Text>
-          </View>
-        ))}
-      </Card>
-    );
-  };
-
-  // Renderizar curiosidades
-  const renderCuriosities = () => {
-    return (
-      <Card style={styles.curiositiesCard}>
-        <Text style={styles.curiositiesTitle}>
-          🔍 Curiosidades Interesantes
-        </Text>
-
-        {curiosities.map((curiosity, index) => (
-          <View key={index} style={styles.curiosityItem}>
-            <Text style={styles.curiosityIcon}>{curiosity.icon}</Text>
-            <Text style={styles.curiosityText}>{curiosity.text}</Text>
-          </View>
-        ))}
-      </Card>
-    );
-  };
+              ))}
+            </View>
+          );
+        })}
+      </View>
+    </Card>
+  );
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -171,40 +130,43 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
         showsVerticalScrollIndicator={false}
       >
         <Card style={styles.titleCard}>
-          <Text style={styles.title}>🌡️ Escalas de Temperatura</Text>
+          <Text style={styles.title}>🌡️ {t('explanation.title')}</Text>
           <Text style={styles.subtitle}>
-            Guía completa de las {temperatureScales.length} escalas principales
+            {t('explanation.subtitle', {
+              count: temperatureScales.length,
+            })}
           </Text>
-          <Text style={styles.introText}>
-            Desde escalas históricas hasta las escalas absolutas modernas
-            utilizadas en ciencia.
-          </Text>
+          <Text style={styles.introText}>{t('explanation.intro')}</Text>
         </Card>
 
         <Card style={styles.introCard}>
           <Text style={styles.introCardTitle}>{introText.title}</Text>
           <Text style={styles.introCardText}>{introText.description}</Text>
-          <View style={styles.introPoints}>
-            {introText.points.map((point, index) => (
-              <Text key={index} style={styles.introPoint}>
-                • <Text style={styles.bold}>{point.split(':')[0]}:</Text>{' '}
-                {point.split(':')[1]}
-              </Text>
-            ))}
-          </View>
         </Card>
 
-        {renderHistoricalInfo()}
-
         <Text style={styles.sectionHeader}>
-          📚 Las {temperatureScales.length} Escalas de Temperatura
+          📚{' '}
+          {t('explanation.sectionScales', {
+            count: temperatureScales.length,
+          })}
         </Text>
 
-        {temperatureScales.map(scale => renderScaleCard(scale))}
+        {temperatureScales.map(renderScaleCard)}
 
         {renderComparisonTable()}
 
-        {renderCuriosities()}
+        <Card style={styles.curiositiesCard}>
+          <Text style={styles.curiositiesTitle}>
+            🔍 {t('explanation.curiosities')}
+          </Text>
+
+          {curiosities.map((curiosity, index) => (
+            <View key={index} style={styles.curiosityItem}>
+              <Text style={styles.curiosityIcon}>{curiosity.icon}</Text>
+              <Text style={styles.curiosityText}>{curiosity.text}</Text>
+            </View>
+          ))}
+        </Card>
 
         <Card style={styles.finalNoteCard}>
           <Text style={styles.finalNoteTitle}>{finalNote.title}</Text>

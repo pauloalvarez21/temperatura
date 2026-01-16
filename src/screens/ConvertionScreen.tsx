@@ -12,31 +12,28 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
+import { useTranslation } from 'react-i18next';
+
 import Card from '../components/Card';
 import useTemperatureConverter from '../hooks/useTemperatureConverter';
 import { TemperatureScale } from '../utils/temperatureConverter';
 
 const { width } = Dimensions.get('window');
 
-const ConvertionScreen: React.FC = () => {
+const ConvertionScreen = () => {
+  const { t } = useTranslation();
+
   const {
-    // Estados
     inputValue,
     fromScale,
     toScale,
     convertedValue,
     error,
-
-    // Setters
     setInputValue,
     setFromScale,
     setToScale,
-
-    // Funciones
     swapScales,
     reset,
-
-    // Utilidades
     formatResult,
     getScaleInfo,
     allScales,
@@ -99,15 +96,15 @@ const ConvertionScreen: React.FC = () => {
         >
           {/* Título */}
           <Card style={styles.titleCard}>
-            <Text style={styles.title}>🌡️ Conversor de Temperatura</Text>
-            <Text style={styles.subtitle}>
-              Convierte entre 8 escalas diferentes
-            </Text>
+            <Text style={styles.title}>🌡️ {t('conversion.title')}</Text>
+            <Text style={styles.subtitle}>{t('conversion.subtitle')}</Text>
           </Card>
 
-          {/* Input y escalas */}
+          {/* Input */}
           <Card style={styles.inputCard}>
-            <Text style={styles.inputLabel}>Valor a convertir:</Text>
+            <Text style={styles.inputLabel}>
+              {t('conversion.valueToConvert')}:
+            </Text>
 
             <View style={styles.inputContainer}>
               <TextInput
@@ -115,7 +112,7 @@ const ConvertionScreen: React.FC = () => {
                 value={inputValue}
                 onChangeText={setInputValue}
                 keyboardType="numeric"
-                placeholder="Ingresa la temperatura"
+                placeholder={t('conversion.placeholder')}
                 placeholderTextColor="#999"
               />
               <Text style={styles.inputUnit}>
@@ -123,10 +120,18 @@ const ConvertionScreen: React.FC = () => {
               </Text>
             </View>
 
-            {error && <Text style={styles.errorText}>{error}</Text>}
+            {error && (
+              <Text style={styles.errorText}>
+                {t(`conversion.errors.${error}`, error)}
+              </Text>
+            )}
 
             <View style={styles.scalesContainer}>
-              {renderScaleSelector(fromScale, setFromScale, 'De:')}
+              {renderScaleSelector(
+                fromScale,
+                setFromScale,
+                t('conversion.from'),
+              )}
 
               <TouchableOpacity
                 style={styles.swapButton}
@@ -134,29 +139,33 @@ const ConvertionScreen: React.FC = () => {
                 activeOpacity={0.7}
               >
                 <Text style={styles.swapIcon}>🔄</Text>
-                <Text style={styles.swapText}>Intercambiar</Text>
+                <Text style={styles.swapText}>{t('conversion.swap')}</Text>
               </TouchableOpacity>
 
-              {renderScaleSelector(toScale, setToScale, 'A:')}
+              {renderScaleSelector(toScale, setToScale, t('conversion.to'))}
             </View>
           </Card>
 
           {/* Resultado */}
           <Card style={styles.resultCard}>
-            <Text style={styles.resultLabel}>Resultado:</Text>
+            <Text style={styles.resultLabel}>{t('conversion.result')}:</Text>
+
             <View style={styles.resultContainer}>
               <Text style={styles.resultValue}>{formatResult(decimals)}</Text>
               <Text style={styles.resultDetail}>
-                {convertedValue.toLocaleString('es-ES', {
+                {convertedValue.toLocaleString(undefined, {
                   minimumFractionDigits: decimals,
                   maximumFractionDigits: decimals,
                 })}
               </Text>
             </View>
 
-            {/* Selector de decimales */}
+            {/* Decimales */}
             <View style={styles.decimalSelector}>
-              <Text style={styles.decimalLabel}>Decimales:</Text>
+              <Text style={styles.decimalLabel}>
+                {t('conversion.decimals')}:
+              </Text>
+
               <View style={styles.decimalButtons}>
                 {[0, 1, 2, 3, 4].map(num => (
                   <TouchableOpacity
@@ -182,14 +191,16 @@ const ConvertionScreen: React.FC = () => {
             </View>
           </Card>
 
-          {/* Botones de acción */}
+          {/* Botón reset */}
           <View style={styles.actionButtons}>
             <TouchableOpacity
               style={[styles.actionButton, styles.resetButton]}
               onPress={reset}
               activeOpacity={0.7}
             >
-              <Text style={styles.resetButtonText}>🔄 Reiniciar</Text>
+              <Text style={styles.resetButtonText}>
+                🔄 {t('conversion.reset')}
+              </Text>
             </TouchableOpacity>
           </View>
         </ScrollView>

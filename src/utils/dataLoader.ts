@@ -1,9 +1,19 @@
-import temperatureScalesData from '../data/temperatureScales.json';
+import i18n from 'i18next';
+
+import temperatureScalesES from '../data/temperatureScales.json';
+import temperatureScalesEN from '../data/temperatureScales.en.json';
+
 import { TemperatureScalesData } from '../types/temperatureScales';
 
-// Cargar datos del JSON
+// Cargar datos del JSON según idioma
 export const loadTemperatureScalesData = (): TemperatureScalesData => {
-  return temperatureScalesData as TemperatureScalesData;
+  const language = i18n.language;
+
+  if (language.startsWith('en')) {
+    return temperatureScalesEN as TemperatureScalesData;
+  }
+
+  return temperatureScalesES as TemperatureScalesData;
 };
 
 // Función para convertir temperatura a diferentes escalas

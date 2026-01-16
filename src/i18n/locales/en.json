@@ -1,0 +1,89 @@
+{
+  "home": {
+    "title": "Temperature Converter",
+    "subtitle": "A complete tool to convert between 8 temperature scales",
+    "description": "Developed for students, engineers, and professionals who need precision in thermal calculations.",
+
+    "actions": {
+      "convert": {
+        "title": "Convert",
+        "subtitle": "Go to converter"
+      },
+      "learn": {
+        "title": "Learn",
+        "subtitle": "View scales"
+      }
+    },
+
+    "features": {
+      "title": "Main Features",
+      "items": {
+        "scales": {
+          "title": "8 Scales",
+          "description": "Kelvin, Celsius, Fahrenheit, Rankine, Réaumur, Rømer, Newton and Delisle"
+        },
+        "fast": {
+          "title": "Fast Conversion",
+          "description": "Instant conversions between all scales"
+        },
+        "compare": {
+          "title": "Comparison",
+          "description": "Comparison tables and common values"
+        },
+        "precision": {
+          "title": "Precision",
+          "description": "Up to 4 decimal places"
+        }
+      }
+    },
+
+    "temps": {
+      "title": "Highlighted Temperatures",
+      "freeze": "Water freezes",
+      "boil": "Water boils",
+      "body": "Human body",
+      "absoluteZero": "Absolute zero"
+    },
+
+    "cta": {
+      "title": "Ready to start?",
+      "description": "Explore all the features of our advanced temperature converter",
+      "button": "Start Converting →"
+    },
+
+    "footer": {
+      "rights": "© 2026 Gaelectronica - All rights reserved",
+      "tool": "Temperature conversion tool"
+    }
+  },
+  "conversion": {
+    "title": "Temperature Converter",
+    "subtitle": "Convert between 8 different scales",
+    "valueToConvert": "Value to convert",
+    "placeholder": "Enter temperature",
+    "from": "From",
+    "to": "To",
+    "swap": "Swap",
+    "result": "Result",
+    "decimals": "Decimals",
+    "reset": "Reset",
+    "errors": {
+      "invalid": "Invalid value"
+    }
+  },
+  "explanation": {
+    "title": "Temperature Scales",
+    "subtitle": "Complete guide to the {{count}} main scales",
+    "intro": "From historical scales to modern absolute scales used in science.",
+    "sectionScales": "The {{count}} Temperature Scales",
+    "keyPoints": "Key points",
+    "formula": "Main formula",
+    "usage": "Historical / current usage",
+    "curiosities": "Interesting Facts",
+    "comparison": {
+      "title": "Scale Comparison",
+      "subtitle": "Equivalent values for common temperatures",
+      "temperature": "Temperature"
+    }
+  }
+}

@@ -8,43 +8,49 @@ import {
   Dimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+
 import { HomeScreenProps } from '../types/navigation.types';
 import Card from '../components/Card';
 
 const { width } = Dimensions.get('window');
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
-  // Datos de características de la app
+  const { t } = useTranslation();
+  // 🔹 Features (texto desde i18n)
   const features = [
     {
       icon: '🌡️',
-      title: '8 Escalas',
-      description:
-        'Kelvin, Celsius, Fahrenheit, Rankine, Réaumur, Rømer, Newton, Delisle',
+      title: t('home.features.items.scales.title'),
+      description: t('home.features.items.scales.description'),
     },
     {
       icon: '⚡',
-      title: 'Conversión Rápida',
-      description: 'Conversiones instantáneas entre todas las escalas',
+      title: t('home.features.items.fast.title'),
+      description: t('home.features.items.fast.description'),
     },
     {
       icon: '📊',
-      title: 'Comparativa',
-      description: 'Tablas comparativas y valores comunes',
+      title: t('home.features.items.compare.title'),
+      description: t('home.features.items.compare.description'),
     },
     {
       icon: '🎯',
-      title: 'Precisión',
-      description: 'Hasta 4 decimales de precisión',
+      title: t('home.features.items.precision.title'),
+      description: t('home.features.items.precision.description'),
     },
   ];
 
-  // Temperaturas destacadas
+  // 🔹 Temperaturas destacadas (solo labels traducibles)
   const highlightedTemps = [
-    { temp: '0°C', label: 'Agua congela', color: '#2196F3' },
-    { temp: '100°C', label: 'Agua hierve', color: '#FF5722' },
-    { temp: '37°C', label: 'Cuerpo humano', color: '#4CAF50' },
-    { temp: '-273.15°C', label: 'Cero absoluto', color: '#9C27B0' },
+    { temp: '0°C', label: t('home.temps.freeze'), color: '#2196F3' },
+    { temp: '100°C', label: t('home.temps.boil'), color: '#FF5722' },
+    { temp: '37°C', label: t('home.temps.body'), color: '#4CAF50' },
+    {
+      temp: '-273.15°C',
+      label: t('home.temps.absoluteZero'),
+      color: '#9C27B0',
+    },
   ];
 
   return (
@@ -53,23 +59,18 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
       >
-        {/* Hero Section */}
+        {/* Hero */}
         <Card style={styles.heroCard}>
           <View style={styles.heroContent}>
-            <Text style={styles.heroTitle}>Conversor de Temperatura</Text>
-            <Text style={styles.heroSubtitle}>
-              Una herramienta completa para conversión entre 8 escalas de
-              temperatura diferentes
-            </Text>
-            <Text style={styles.heroDescription}>
-              Desarrollada por el equipo de Gaelectronica para estudiantes,
-              ingenieros y profesionales que necesitan precisión en sus cálculos
-              térmicos.
-            </Text>
+            <Text style={styles.heroTitle}>{t('home.title')}</Text>
+
+            <Text style={styles.heroSubtitle}>{t('home.subtitle')}</Text>
+
+            <Text style={styles.heroDescription}>{t('home.description')}</Text>
           </View>
         </Card>
 
-        {/* Botones de acción principales */}
+        {/* Botones principales */}
         <View style={styles.actionButtons}>
           <TouchableOpacity
             style={[styles.actionButton, styles.primaryButton]}
@@ -78,8 +79,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           >
             <Text style={styles.actionButtonIcon}>🌡️</Text>
             <View style={styles.actionButtonTextContainer}>
-              <Text style={styles.actionButtonTitle}>Convertir</Text>
-              <Text style={styles.actionButtonSubtitle}>Ir al conversor</Text>
+              <Text style={styles.actionButtonTitle}>
+                {t('home.actions.convert.title')}
+              </Text>
+              <Text style={styles.actionButtonSubtitle}>
+                {t('home.actions.convert.subtitle')}
+              </Text>
             </View>
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
@@ -91,18 +96,20 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           >
             <Text style={styles.actionButtonIcon}>📚</Text>
             <View style={styles.actionButtonTextContainer}>
-              <Text style={styles.actionButtonTitle}>Aprender</Text>
-              <Text style={styles.actionButtonSubtitle}>Ver escalas</Text>
+              <Text style={styles.actionButtonTitle}>
+                {t('home.actions.learn.title')}
+              </Text>
+              <Text style={styles.actionButtonSubtitle}>
+                {t('home.actions.learn.subtitle')}
+              </Text>
             </View>
             <Text style={styles.chevron}>›</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Características destacadas */}
+        {/* Características */}
         <Card style={styles.featuresCard}>
-          <Text style={styles.sectionTitle}>
-            ✨ Características Principales
-          </Text>
+          <Text style={styles.sectionTitle}>✨ {t('home.features.title')}</Text>
 
           <View style={styles.featuresGrid}>
             {features.map((feature, index) => (
@@ -121,7 +128,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
         {/* Temperaturas destacadas */}
         <Card style={styles.tempsCard}>
-          <Text style={styles.sectionTitle}>🔥 Temperaturas Destacadas</Text>
+          <Text style={styles.sectionTitle}>🔥 {t('home.temps.title')}</Text>
 
           <View style={styles.tempsGrid}>
             {highlightedTemps.map((temp, index) => (
@@ -129,7 +136,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
                 key={index}
                 style={[
                   styles.tempItem,
-                  { backgroundColor: `${temp.color}15` }, // 15 = 10% opacidad
+                  { backgroundColor: `${temp.color}15` },
                 ]}
               >
                 <Text style={[styles.tempValue, { color: temp.color }]}>
@@ -141,35 +148,28 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           </View>
         </Card>
 
-        {/* CTA Final */}
+        {/* CTA */}
         <Card style={styles.ctaCard}>
-          <Text style={styles.ctaTitle}>¿Listo para empezar?</Text>
-          <Text style={styles.ctaDescription}>
-            Explora todas las funcionalidades de nuestro conversor avanzado de
-            temperatura
-          </Text>
+          <Text style={styles.ctaTitle}>{t('home.cta.title')}</Text>
+
+          <Text style={styles.ctaDescription}>{t('home.cta.description')}</Text>
 
           <TouchableOpacity
             style={styles.ctaButton}
             onPress={() => navigation.navigate('Convertion')}
             activeOpacity={0.7}
           >
-            <Text style={styles.ctaButtonText}>Comenzar a Convertir →</Text>
+            <Text style={styles.ctaButtonText}>{t('home.cta.button')}</Text>
           </TouchableOpacity>
         </Card>
 
         {/* Footer */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>
-            © 2026 Gaelectronica - Todos los derechos reservados
-          </Text>
-          <Text style={styles.footerSubtext}>
-            Herramienta para conversión de temperatura
-          </Text>
+          <Text style={styles.footerText}>{t('home.footer.rights')}</Text>
+          <Text style={styles.footerSubtext}>{t('home.footer.tool')}</Text>
           <Text style={styles.footerVersion}>v1.0.0</Text>
         </View>
 
-        {/* Espacio al final */}
         <View style={styles.bottomSpacer} />
       </ScrollView>
     </SafeAreaView>
