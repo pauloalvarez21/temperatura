@@ -2,6 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 // Importar tipos
 import { RootTabParamList } from '../types/navigation.types';
@@ -50,6 +51,8 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, label }) => {
 };
 
 const AppNavigator = () => {
+  const { t } = useTranslation();
+
   return (
     <NavigationContainer>
       <Tab.Navigator
@@ -102,24 +105,24 @@ const AppNavigator = () => {
           name="Home"
           component={HomeScreen}
           options={{
-            title: 'Inicio',
-            headerTitle: 'Inicio',
+            title: t('navigation.home'),
+            headerTitle: t('navigation.home'),
           }}
         />
         <Tab.Screen
           name="Convertion"
           component={ConvertionScreen}
           options={{
-            title: 'Conversión',
-            headerTitle: 'Conversión',
+            title: t('navigation.conversion'),
+            headerTitle: t('navigation.conversion'),
           }}
         />
         <Tab.Screen
           name="Explanation"
           component={ExplanationScreen}
           options={{
-            title: 'Explicación',
-            headerTitle: 'Explicación',
+            title: t('navigation.explanation'),
+            headerTitle: t('navigation.explanation'),
           }}
         />
       </Tab.Navigator>

@@ -85,5 +85,48 @@
       "subtitle": "Equivalent values for common temperatures",
       "temperature": "Temperature"
     }
+  },
+  "navigation": {
+    "home": "Home",
+    "conversion": "Convertion",
+    "explanation": "Information"
+  },
+  "errors": {
+    "invalidNumber": "Please enter a valid number",
+    "conversionError": "Conversion error"
+  },
+  "scales": {
+    "kelvin": {
+      "name": "Kelvin",
+      "description": "Absolute scale of temperature"
+    },
+    "celsius": {
+      "name": "Degree Celsius",
+      "description": "Scale based on freezing and boiling points of water"
+    },
+    "fahrenheit": {
+      "name": "Degree Fahrenheit",
+      "description": "Scale based on three points: freezing, boiling and body"
+    },
+    "rankine": {
+      "name": "Degree Réaumur",
+      "description": "Scale based on mixture of ice and salt"
+    },
+    "reaumur": {
+      "name": "Degree Réaumur",
+      "description": "Scale based on mixture of ice and salt"
+    },
+    "romer": {
+      "name": "Degree Rømer",
+      "description": "Scale based on mixture of ice and salt"
+    },
+    "newton": {
+      "name": "Degree Newton",
+      "description": "Inverse scale based on mixture of ice and salt"
+    },
+    "delisle": {
+      "name": "Degree Delisle",
+      "description": "Inverse scale based on mixture of ice and salt"
+    }
   }
 }

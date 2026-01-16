@@ -20,45 +20,44 @@ export interface TemperatureScaleInfo {
 export const temperatureScales: Record<TemperatureScale, TemperatureScaleInfo> =
   {
     kelvin: {
-      name: 'Kelvin',
+      name: 'scales.kelvin.name',
       symbol: 'K',
-      description: 'Escala absoluta de temperatura',
+      description: 'scales.kelvin.description',
     },
     celsius: {
-      name: 'Grado Celsius',
+      name: 'scales.celsius.name',
       symbol: '°C',
-      description:
-        'Escala basada en puntos de congelación y ebullición del agua',
+      description: 'scales.celsius.description',
     },
     fahrenheit: {
-      name: 'Grado Fahrenheit',
+      name: 'scales.fahrenheit.name',
       symbol: '°F',
-      description: 'Escala usada principalmente en Estados Unidos',
+      description: 'scales.fahrenheit.description',
     },
     rankine: {
-      name: 'Rankine',
+      name: 'scales.rankine.name',
       symbol: '°R',
-      description: 'Escala absoluta basada en Fahrenheit',
+      description: 'scales.rankine.description',
     },
     reaumur: {
-      name: 'Grado Réaumur',
+      name: 'scales.reaumur.name',
       symbol: '°Ré',
-      description: 'Escala histórica usada en Europa',
+      description: 'scales.reaumur.description',
     },
     romer: {
-      name: 'Grado Rømer',
+      name: 'scales.romer.name',
       symbol: '°Rø',
-      description: 'Escala histórica danesa',
+      description: 'scales.romer.description',
     },
     newton: {
-      name: 'Grado Newton',
+      name: 'scales.newton.name',
       symbol: '°N',
-      description: 'Escala propuesta por Isaac Newton',
+      description: 'scales.newton.description',
     },
     delisle: {
-      name: 'Grado Delisle',
+      name: 'scales.delisle.name',
       symbol: '°De',
-      description: 'Escala rusa histórica (inversa)',
+      description: 'scales.delisle.description',
     },
   };
 

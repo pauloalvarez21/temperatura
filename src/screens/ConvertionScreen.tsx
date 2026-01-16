@@ -203,6 +203,12 @@ const ConvertionScreen = () => {
               </Text>
             </TouchableOpacity>
           </View>
+          {/* Footer */}
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>{t('home.footer.rights')}</Text>
+            <Text style={styles.footerSubtext}>{t('home.footer.tool')}</Text>
+            <Text style={styles.footerVersion}>v1.0.0</Text>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
@@ -474,6 +480,30 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#555',
     lineHeight: 18,
+  },
+  footer: {
+    alignItems: 'center',
+    paddingTop: 20,
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+  },
+  footerText: {
+    fontSize: 12,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  footerSubtext: {
+    fontSize: 11,
+    color: '#999',
+    textAlign: 'center',
+    marginBottom: 8,
+    fontStyle: 'italic',
+  },
+  footerVersion: {
+    fontSize: 10,
+    color: '#BBB',
+    textAlign: 'center',
   },
 });
 

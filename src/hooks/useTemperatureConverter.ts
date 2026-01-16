@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   TemperatureScale,
   convertTemperature,
@@ -17,6 +18,7 @@ const useTemperatureConverter = ({
   initialFromScale = 'celsius',
   initialToScale = 'fahrenheit',
 }: UseTemperatureConverterProps = {}) => {
+  const { t } = useTranslation();
   // Estados
   const [inputValue, setInputValue] = useState<string>(initialValue.toString());
   const [fromScale, setFromScale] =
@@ -38,7 +40,7 @@ const useTemperatureConverter = ({
     const numValue = Number.parseFloat(value);
 
     if (Number.isNaN(numValue)) {
-      setError('Por favor ingresa un número válido');
+      setError(t('errors.invalidNumber'));
       setConvertedValue(0);
       return;
     }
@@ -49,7 +51,7 @@ const useTemperatureConverter = ({
       const result = convertTemperature(numValue, fromScale, toScale);
       setConvertedValue(result);
     } catch (err) {
-      setError('Error en la conversión' + err);
+      setError(t('errors.conversionError') + err);
       setConvertedValue(0);
     }
   };
@@ -117,7 +119,14 @@ const useTemperatureConverter = ({
     // Utilidades
     formatResult: (decimals: number = 2) =>
       formatTemperature(convertedValue, toScale, decimals),
-    getScaleInfo: (scale: TemperatureScale) => temperatureScales[scale],
+    getScaleInfo: (scale: TemperatureScale) => {
+      const info = temperatureScales[scale];
+      return {
+        ...info,
+        name: t(info.name),
+        description: t(info.description),
+      };
+    },
     allScales: Object.keys(temperatureScales) as TemperatureScale[],
   };
 };

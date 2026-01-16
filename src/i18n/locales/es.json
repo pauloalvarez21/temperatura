@@ -80,5 +80,48 @@
       "subtitle": "Valores equivalentes para temperaturas comunes",
       "temperature": "Temperatura"
     }
+  },
+  "navigation": {
+    "home": "Inicio",
+    "conversion": "Conversión",
+    "explanation": "Información"
+  },
+  "errors": {
+    "invalidNumber": "Por favor ingresa un número válido",
+    "conversionError": "Error en la conversión"
+  },
+  "scales": {
+    "kelvin": {
+      "name": "Kelvin",
+      "description": "Escala absoluta de temperatura"
+    },
+    "celsius": {
+      "name": "Grado Celsius",
+      "description": "Escala basada en puntos de congelación y ebullición del agua"
+    },
+    "fahrenheit": {
+      "name": "Grado Fahrenheit",
+      "description": "Escala basada en tres puntos: congelación, ebullición y cuerpo"
+    },
+    "rankine": {
+      "name": "Grado Réaumur",
+      "description": "Escala basada en la mezcla de hielo y sal"
+    },
+    "reaumur": {
+      "name": "Grado Réaumur",
+      "description": "Escala basada en la mezcla de hielo y sal"
+    },
+    "romer": {
+      "name": "Grado Rømer",
+      "description": "Escala basada en la mezcla de hielo y sal"
+    },
+    "newton": {
+      "name": "Grado Newton",
+      "description": "Escala inversa basada en la mezcla de hielo y sal"
+    },
+    "delisle": {
+      "name": "Grado Delisle",
+      "description": "Escala inversa basada en la mezcla de hielo y sal"
+    }
   }
 }
