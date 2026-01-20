@@ -18,6 +18,16 @@ import {
 } from '../utils/dataLoader';
 import { TemperatureScaleData } from '../types/temperatureScales';
 
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from 'react-native-google-mobile-ads';
+
+const adUnitId = __DEV__
+  ? TestIds.ADAPTIVE_BANNER
+  : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
 const { width } = Dimensions.get('window');
 
 const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
@@ -288,6 +298,15 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
         </View>
 
         <View style={styles.bottomSpacer} />
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            networkExtras: {
+              collapsible: 'bottom',
+            },
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );

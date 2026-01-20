@@ -18,7 +18,15 @@ import Card from '../components/Card';
 import useTemperatureConverter from '../hooks/useTemperatureConverter';
 import { TemperatureScale } from '../utils/temperatureConverter';
 
-//const { width } = Dimensions.get('window');
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from 'react-native-google-mobile-ads';
+
+const adUnitId = __DEV__
+  ? TestIds.ADAPTIVE_BANNER
+  : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
 
 const ConvertionScreen = () => {
   const { t } = useTranslation();
@@ -250,6 +258,15 @@ const ConvertionScreen = () => {
           </View>
 
           <View style={styles.bottomSpacer} />
+          <BannerAd
+            unitId={adUnitId}
+            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            requestOptions={{
+              networkExtras: {
+                collapsible: 'bottom',
+              },
+            }}
+          />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

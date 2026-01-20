@@ -15,6 +15,16 @@ import { useTranslation } from 'react-i18next';
 import { HomeScreenProps } from '../types/navigation.types';
 import Card from '../components/Card';
 
+import {
+  BannerAd,
+  BannerAdSize,
+  TestIds,
+} from 'react-native-google-mobile-ads';
+
+const adUnitId = __DEV__
+  ? TestIds.ADAPTIVE_BANNER
+  : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+
 const { width } = Dimensions.get('window');
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
@@ -270,6 +280,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         </View>
 
         <View style={styles.bottomSpacer} />
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            networkExtras: {
+              collapsible: 'bottom',
+            },
+          }}
+        />
       </ScrollView>
     </SafeAreaView>
   );
