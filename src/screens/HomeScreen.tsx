@@ -305,6 +305,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginBottom: 12,
+    fontFamily: 'ChowFun-Regular',
   },
   heroSubtitle: {
     fontSize: 16,
