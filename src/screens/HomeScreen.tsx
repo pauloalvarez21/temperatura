@@ -8,6 +8,7 @@ import {
   Dimensions,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -19,11 +20,12 @@ import {
   BannerAd,
   BannerAdSize,
   TestIds,
+  useForeground,
 } from 'react-native-google-mobile-ads';
 
 const adUnitId = __DEV__
   ? TestIds.ADAPTIVE_BANNER
-  : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+  : 'ca-app-pub-2899284558865652/8616461732';
 
 const { width } = Dimensions.get('window');
 
@@ -31,6 +33,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const featuresScrollRef = useRef<ScrollView>(null);
   const [activeFeatureIndex, setActiveFeatureIndex] = useState(0);
+  const bannerRef = useRef<BannerAd>(null);
+
+  useForeground(() => {
+    if (Platform.OS === 'ios') {
+      bannerRef.current?.load();
+    }
+  });
 
   // 🔹 Features
   const features = [

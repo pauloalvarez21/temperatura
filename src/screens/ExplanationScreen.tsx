@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -22,11 +23,12 @@ import {
   BannerAd,
   BannerAdSize,
   TestIds,
+  useForeground,
 } from 'react-native-google-mobile-ads';
 
 const adUnitId = __DEV__
   ? TestIds.ADAPTIVE_BANNER
-  : 'ca-app-pub-xxxxxxxxxxxxx/yyyyyyyyyyyyyy';
+  : 'ca-app-pub-2899284558865652/8616461732';
 
 const { width } = Dimensions.get('window');
 
@@ -214,6 +216,14 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
       </Card>
     );
   };
+
+  const bannerRef = useRef<BannerAd>(null);
+
+  useForeground(() => {
+    if (Platform.OS === 'ios') {
+      bannerRef.current?.load();
+    }
+  });
 
   return (
     <SafeAreaView style={styles.safeArea}>
