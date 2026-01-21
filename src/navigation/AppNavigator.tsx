@@ -15,31 +15,24 @@ import ExplanationScreen from '../screens/ExplanationScreen';
 // Crear el tab navigator con tipos
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
-// Componente para el indicador de pestaña con imagen
+// Mapeo de nombres de ruta a fuentes de íconos
+const iconMapping: Record<keyof RootTabParamList, ImageSourcePropType> = {
+  Home: require('../assets/images/home.png'),
+  Convertion: require('../assets/images/temperature.png'),
+  Explanation: require('../assets/images/info.png'),
+};
+
+// Componente reutilizable para el ícono de la pestaña
 interface TabIconProps {
   focused: boolean;
-  label: string;
+  source: ImageSourcePropType;
 }
 
-const TabIcon: React.FC<TabIconProps> = ({ focused, label }) => {
-  // Definir las imágenes para cada pestaña
-  const getIconSource = (): ImageSourcePropType => {
-    switch (label) {
-      case 'Inicio':
-        return require('../assets/images/home.png');
-      case 'Convertion':
-        return require('../assets/images/temperature.png');
-      case 'Explicacion':
-        return require('../assets/images/info.png');
-      default:
-        return require('../assets/images/home.png');
-    }
-  };
-
+const TabIcon: React.FC<TabIconProps> = ({ focused, source }) => {
   return (
     <View style={styles.tabIconContainer}>
       <Image
-        source={getIconSource()}
+        source={source}
         style={[
           styles.tabIconImage,
           focused ? styles.tabIconImageActive : styles.tabIconImageInactive,
@@ -57,19 +50,9 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused }) => {
-            let label = '';
-
-            if (route.name === 'Home') {
-              label = 'Inicio';
-            } else if (route.name === 'Convertion') {
-              label = 'Convertion';
-            } else if (route.name === 'Explanation') {
-              label = 'Explicacion';
-            }
-
-            return <TabIcon focused={focused} label={label} />;
-          },
+          tabBarIcon: ({ focused }) => (
+            <TabIcon focused={focused} source={iconMapping[route.name]} />
+          ),
           tabBarActiveTintColor: '#2196F3',
           tabBarInactiveTintColor: '#666',
           tabBarStyle: {
@@ -136,15 +119,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   tabIconImage: {
-    width: 150, // Tamaño más realista para íconos
+    width: 150,
     height: 150,
   },
   tabIconImageActive: {
-    // Sin tintColor para mantener colores originales
     opacity: 1, // Mantener opacidad completa
   },
   tabIconImageInactive: {
-    // Sin tintColor para mantener colores originales
     opacity: 0.5, // Solo reducir opacidad, no cambiar color
   },
 });

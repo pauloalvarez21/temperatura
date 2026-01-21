@@ -112,27 +112,27 @@
     },
     "fahrenheit": {
       "name": "Degree Fahrenheit",
-      "description": "Scale based on three points: freezing, boiling and body"
+      "description": "Used mainly in the US, it defines the freezing point of water at 32°F and the boiling point at 212°F."
     },
     "rankine": {
-      "name": "Degree Réaumur",
-      "description": "Scale based on mixture of ice and salt"
+      "name": "Degree Rankine",
+      "description": "Absolute thermodynamic scale, where 0°R is absolute zero. Related to Fahrenheit."
     },
     "reaumur": {
       "name": "Degree Réaumur",
-      "description": "Scale based on mixture of ice and salt"
+      "description": "Scale where water freezes at 0°Ré and boils at 80°Ré."
     },
     "romer": {
       "name": "Degree Rømer",
-      "description": "Scale based on mixture of ice and salt"
+      "description": "Historical scale that defines the freezing point of water at 7.5°Rø."
     },
     "newton": {
       "name": "Degree Newton",
-      "description": "Inverse scale based on mixture of ice and salt"
+      "description": "Scale that defines the freezing point of water at 0°N and the boiling point at 33°N."
     },
     "delisle": {
       "name": "Degree Delisle",
-      "description": "Inverse scale based on mixture of ice and salt"
+      "description": "Inverse scale where water boils at 0°De and freezes at 150°De."
     }
   }
 }

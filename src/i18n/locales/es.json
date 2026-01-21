@@ -107,27 +107,27 @@
     },
     "fahrenheit": {
       "name": "Grado Fahrenheit",
-      "description": "Escala basada en tres puntos: congelación, ebullición y cuerpo"
+      "description": "Usada principalmente en EE.UU., define el punto de congelación del agua en 32°F y el de ebullición en 212°F."
     },
     "rankine": {
-      "name": "Grado Réaumur",
-      "description": "Escala basada en la mezcla de hielo y sal"
+      "name": "Grado Rankine",
+      "description": "Escala termodinámica absoluta, donde 0°R es el cero absoluto. Relacionada con Fahrenheit."
     },
     "reaumur": {
       "name": "Grado Réaumur",
-      "description": "Escala basada en la mezcla de hielo y sal"
+      "description": "Escala donde el agua se congela a 0°Ré y hierve a 80°Ré."
     },
     "romer": {
       "name": "Grado Rømer",
-      "description": "Escala basada en la mezcla de hielo y sal"
+      "description": "Escala histórica que define el punto de congelación del agua en 7.5°Rø."
     },
     "newton": {
       "name": "Grado Newton",
-      "description": "Escala inversa basada en la mezcla de hielo y sal"
+      "description": "Escala que define el punto de congelación del agua en 0°N y el de ebullición en 33°N."
     },
     "delisle": {
       "name": "Grado Delisle",
-      "description": "Escala inversa basada en la mezcla de hielo y sal"
+      "description": "Escala inversa donde el agua hierve a 0°De y se congela a 150°De."
     }
   }
 }
