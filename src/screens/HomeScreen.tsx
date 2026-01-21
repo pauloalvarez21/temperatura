@@ -1,3 +1,10 @@
+/**
+ * @file HomeScreen.tsx
+ * @description Pantalla principal de la aplicación. Sirve como "Landing Page" dentro de la app,
+ * ofreciendo navegación a las herramientas de conversión y documentación educativa.
+ * Implementa un carrusel de características y muestra datos de interés.
+ */
+
 import React, { useRef, useState } from 'react';
 import {
   View,
@@ -23,12 +30,26 @@ import {
   useForeground,
 } from 'react-native-google-mobile-ads';
 
+/**
+ * Identificador de la unidad de anuncios (Banner).
+ * Utiliza IDs de prueba de Google en modo desarrollo (__DEV__) para evitar violaciones de política,
+ * y el ID real de producción en builds de release.
+ */
 const adUnitId = __DEV__
   ? TestIds.ADAPTIVE_BANNER
   : 'ca-app-pub-2899284558865652/8616461732';
 
 const { width } = Dimensions.get('window');
 
+/**
+ * Componente funcional que renderiza la pantalla de inicio (Home).
+ *
+ * Gestiona la navegación principal y presenta un resumen visual de las capacidades de la app.
+ * Incluye integración con AdMob para monetización mediante banners adaptativos.
+ *
+ * @param {HomeScreenProps} props - Propiedades de navegación tipadas.
+ * @returns {React.JSX.Element} Elemento JSX que representa la pantalla.
+ */
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const { t } = useTranslation();
   const featuresScrollRef = useRef<ScrollView>(null);
@@ -41,7 +62,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     }
   });
 
-  // 🔹 Features
+  /**
+   * Configuración de las tarjetas del carrusel de características.
+   */
   const features = [
     {
       icon: '🌡️',
@@ -73,7 +96,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     },
   ];
 
-  // 🔹 Temperaturas destacadas
+  /**
+   * Datos estáticos de temperaturas de referencia para la sección informativa.
+   */
   const highlightedTemps = [
     {
       temp: '0°C',
@@ -96,7 +121,12 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     },
   ];
 
-  // 🔹 Handle scroll para actualizar el indicador activo
+  /**
+   * Manejador del evento de desplazamiento (scroll) para el carrusel de características.
+   * Calcula el índice activo actual basándose en la posición X del scroll para actualizar la paginación.
+   *
+   * @param {NativeSyntheticEvent<NativeScrollEvent>} event - Evento nativo del scroll.
+   */
   const handleFeaturesScroll = (
     event: NativeSyntheticEvent<NativeScrollEvent>,
   ) => {
@@ -106,7 +136,11 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     setActiveFeatureIndex(currentIndex);
   };
 
-  // 🔹 Navegar a un slide específico
+  /**
+   * Desplaza programáticamente el ScrollView horizontal al índice especificado.
+   *
+   * @param {number} index - Índice de la diapositiva a visualizar (0 basado).
+   */
   const goToSlide = (index: number) => {
     if (featuresScrollRef.current) {
       featuresScrollRef.current.scrollTo({
@@ -291,12 +325,13 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         <View style={styles.bottomSpacer} />
         <BannerAd
           unitId={adUnitId}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
           requestOptions={{
             networkExtras: {
               collapsible: 'bottom',
             },
           }}
+          ref={bannerRef}
         />
       </ScrollView>
     </SafeAreaView>
@@ -310,7 +345,6 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 16,
-    paddingBottom: 32,
   },
   heroCard: {
     marginBottom: 20,

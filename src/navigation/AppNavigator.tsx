@@ -50,6 +50,7 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({ route }) => ({
+          headerShown: false, // Oculta el header para todas las pestañas
           tabBarIcon: ({ focused }) => (
             <TabIcon focused={focused} source={iconMapping[route.name]} />
           ),
@@ -68,20 +69,6 @@ const AppNavigator = () => {
             shadowOpacity: 0.1,
             shadowRadius: 4,
           },
-          headerStyle: {
-            backgroundColor: '#2196F3',
-            elevation: 4,
-            shadowColor: '#000',
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-          },
-          headerTintColor: 'white',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontSize: 20,
-          },
-          headerTitleAlign: 'center' as const,
         })}
       >
         <Tab.Screen
@@ -89,7 +76,6 @@ const AppNavigator = () => {
           component={HomeScreen}
           options={{
             title: t('navigation.home'),
-            headerTitle: t('navigation.home'),
           }}
         />
         <Tab.Screen
@@ -97,7 +83,6 @@ const AppNavigator = () => {
           component={ConvertionScreen}
           options={{
             title: t('navigation.conversion'),
-            headerTitle: t('navigation.conversion'),
           }}
         />
         <Tab.Screen
@@ -105,7 +90,6 @@ const AppNavigator = () => {
           component={ExplanationScreen}
           options={{
             title: t('navigation.explanation'),
-            headerTitle: t('navigation.explanation'),
           }}
         />
       </Tab.Navigator>

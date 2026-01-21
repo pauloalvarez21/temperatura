@@ -1,3 +1,10 @@
+/**
+ * @file ConvertionScreen.tsx
+ * @description Pantalla de conversión de temperaturas. Permite al usuario ingresar un valor,
+ * seleccionar escalas de origen y destino, y visualizar el resultado con precisión ajustable.
+ * Utiliza un hook personalizado para la lógica de conversión.
+ */
+
 import React, { useState, useRef } from 'react';
 import {
   View,
@@ -6,7 +13,6 @@ import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  //Dimensions,
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
@@ -25,10 +31,24 @@ import {
   useForeground,
 } from 'react-native-google-mobile-ads';
 
+/**
+ * Identificador de la unidad de anuncios (Banner).
+ * Utiliza IDs de prueba de Google en modo desarrollo (__DEV__) para evitar violaciones de política,
+ * y el ID real de producción en builds de release.
+ */
 const adUnitId = __DEV__
   ? TestIds.ADAPTIVE_BANNER
   : 'ca-app-pub-2899284558865652/8616461732';
 
+/**
+ * Componente funcional que renderiza la pantalla de conversión.
+ *
+ * Gestiona la interacción del usuario para transformar valores entre diferentes escalas
+ * termométricas. Incluye controles para intercambiar escalas, ajustar decimales y
+ * reiniciar el formulario.
+ *
+ * @returns {React.JSX.Element} Elemento JSX que representa la pantalla.
+ */
 const ConvertionScreen = () => {
   const { t } = useTranslation();
 
@@ -36,7 +56,6 @@ const ConvertionScreen = () => {
     inputValue,
     fromScale,
     toScale,
-    convertedValue,
     error,
     setInputValue,
     setFromScale,
@@ -50,6 +69,17 @@ const ConvertionScreen = () => {
 
   const [decimals, setDecimals] = useState<number>(2);
 
+  /**
+   * Renderiza el componente de selección de escala (Tarjeta con Picker).
+   *
+   * Muestra información visual de la escala seleccionada (símbolo, nombre) y
+   * proporciona un menú desplegable para cambiarla.
+   *
+   * @param {TemperatureScale} selectedScale - Escala actualmente seleccionada.
+   * @param {(scale: TemperatureScale) => void} onScaleChange - Callback ejecutado al cambiar la selección.
+   * @param {string} label - Etiqueta descriptiva (ej: "De:", "A:").
+   * @returns {React.JSX.Element} Elemento UI del selector.
+   */
   const renderScaleSelector = (
     selectedScale: TemperatureScale,
     onScaleChange: (scale: TemperatureScale) => void,
@@ -197,19 +227,6 @@ const ConvertionScreen = () => {
                   <Text style={styles.resultValue}>
                     {formatResult(decimals)}
                   </Text>
-                  <Text style={styles.resultUnit}>
-                    {getScaleInfo(toScale).symbol}
-                  </Text>
-                </View>
-
-                <View style={styles.resultDetailContainer}>
-                  <Text style={styles.resultDetail}>
-                    {convertedValue.toLocaleString(undefined, {
-                      minimumFractionDigits: decimals,
-                      maximumFractionDigits: decimals,
-                    })}{' '}
-                    {getScaleInfo(toScale).symbol}
-                  </Text>
                 </View>
               </Card>
 
@@ -269,12 +286,13 @@ const ConvertionScreen = () => {
           <View style={styles.bottomSpacer} />
           <BannerAd
             unitId={adUnitId}
-            size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+            size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
             requestOptions={{
               networkExtras: {
                 collapsible: 'bottom',
               },
             }}
+            ref={bannerRef}
           />
         </ScrollView>
       </KeyboardAvoidingView>
@@ -480,7 +498,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
   },
   picker: {
-    height: 50,
+    height: 70,
     backgroundColor: 'white',
   },
   swapButton: {

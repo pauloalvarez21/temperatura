@@ -1,3 +1,10 @@
+/**
+ * @file ExplanationScreen.tsx
+ * @description Pantalla educativa que muestra información detallada sobre las escalas de temperatura.
+ * Incluye tarjetas informativas, curiosidades y una tabla comparativa interactiva.
+ * Carga los datos desde un archivo JSON estático y utiliza utilidades de conversión para generar equivalencias.
+ */
+
 import React, { useState, useRef } from 'react';
 import {
   View,
@@ -26,12 +33,25 @@ import {
   useForeground,
 } from 'react-native-google-mobile-ads';
 
+/**
+ * Identificador de la unidad de anuncios (Banner).
+ * Utiliza IDs de prueba de Google en modo desarrollo (__DEV__) para evitar violaciones de política,
+ * y el ID real de producción en builds de release.
+ */
 const adUnitId = __DEV__
   ? TestIds.ADAPTIVE_BANNER
   : 'ca-app-pub-2899284558865652/8616461732';
 
 const { width } = Dimensions.get('window');
 
+/**
+ * Componente funcional que renderiza la pantalla de explicación.
+ *
+ * Presenta contenido educativo cargado dinámicamente, incluyendo historia, fórmulas
+ * y una tabla de equivalencias entre todas las escalas soportadas.
+ *
+ * @returns {React.JSX.Element} Elemento JSX que representa la pantalla.
+ */
 const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
   const { t } = useTranslation();
   const [showFullTable, setShowFullTable] = useState(false);
@@ -45,6 +65,12 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
     finalNote,
   } = data;
 
+  /**
+   * Renderiza una tarjeta con la información detallada de una escala específica.
+   *
+   * @param {TemperatureScaleData} scale - Objeto con los datos de la escala (nombre, fórmula, descripción, etc).
+   * @returns {React.JSX.Element} Tarjeta UI estilizada.
+   */
   const renderScaleCard = (scale: TemperatureScaleData) => (
     <Card key={scale.id} style={styles.scaleCard}>
       <View style={styles.cardHeader}>
@@ -91,6 +117,14 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
     </Card>
   );
 
+  /**
+   * Renderiza la tabla comparativa de temperaturas.
+   *
+   * Gestiona la lógica de visualización expandida/colapsada y el cálculo de dimensiones
+   * para el scroll horizontal y vertical de la tabla.
+   *
+   * @returns {React.JSX.Element} Componente de tabla dentro de una tarjeta.
+   */
   const renderComparisonTable = () => {
     const tableWidth = Math.max(width, temperatureScales.length * 100 + 200);
     const rowHeight = 65;
@@ -310,12 +344,13 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
         <View style={styles.bottomSpacer} />
         <BannerAd
           unitId={adUnitId}
-          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
           requestOptions={{
             networkExtras: {
               collapsible: 'bottom',
             },
           }}
+          ref={bannerRef}
         />
       </ScrollView>
     </SafeAreaView>
