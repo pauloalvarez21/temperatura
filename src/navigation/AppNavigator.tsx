@@ -68,6 +68,8 @@ const AppNavigator = () => {
             shadowOffset: { width: 0, height: -2 },
             shadowOpacity: 0.1,
             shadowRadius: 4,
+          },
+          tabBarLabelStyle: {
             fontFamily: 'ChowFun-Regular',
           },
         })}
