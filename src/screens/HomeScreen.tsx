@@ -153,6 +153,16 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <BannerAd
+        unitId={adUnitId}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          networkExtras: {
+            collapsible: 'bottom',
+          },
+        }}
+        ref={bannerRef}
+      />
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -323,16 +333,6 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         </View>
 
         <View style={styles.bottomSpacer} />
-        <BannerAd
-          unitId={adUnitId}
-          size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
-          requestOptions={{
-            networkExtras: {
-              collapsible: 'bottom',
-            },
-          }}
-          ref={bannerRef}
-        />
       </ScrollView>
     </SafeAreaView>
   );

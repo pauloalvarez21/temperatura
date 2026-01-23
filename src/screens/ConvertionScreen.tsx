@@ -60,7 +60,6 @@ const ConvertionScreen = () => {
     setInputValue,
     setFromScale,
     setToScale,
-    swapScales,
     reset,
     formatResult,
     getScaleInfo,
@@ -142,6 +141,16 @@ const ConvertionScreen = () => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoid}
       >
+        <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            networkExtras: {
+              collapsible: 'bottom',
+            },
+          }}
+          ref={bannerRef}
+        />
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           showsVerticalScrollIndicator={false}
@@ -202,17 +211,6 @@ const ConvertionScreen = () => {
                   setFromScale,
                   t('conversion.from'),
                 )}
-
-                <TouchableOpacity
-                  style={styles.swapButton}
-                  onPress={swapScales}
-                  activeOpacity={0.7}
-                >
-                  <View style={styles.swapIconContainer}>
-                    <Text style={styles.swapIcon}>🔄</Text>
-                  </View>
-                  <Text style={styles.swapText}>{t('conversion.swap')}</Text>
-                </TouchableOpacity>
 
                 {renderScaleSelector(toScale, setToScale, t('conversion.to'))}
               </View>
@@ -284,16 +282,6 @@ const ConvertionScreen = () => {
           </View>
 
           <View style={styles.bottomSpacer} />
-          <BannerAd
-            unitId={adUnitId}
-            size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
-            requestOptions={{
-              networkExtras: {
-                collapsible: 'bottom',
-              },
-            }}
-            ref={bannerRef}
-          />
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

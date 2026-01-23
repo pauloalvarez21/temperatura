@@ -261,6 +261,16 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
+      <BannerAd
+        unitId={adUnitId}
+        size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+        requestOptions={{
+          networkExtras: {
+            collapsible: 'bottom',
+          },
+        }}
+        ref={bannerRef}
+      />
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -342,16 +352,6 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
         </View>
 
         <View style={styles.bottomSpacer} />
-        <BannerAd
-          unitId={adUnitId}
-          size={BannerAdSize.INLINE_ADAPTIVE_BANNER}
-          requestOptions={{
-            networkExtras: {
-              collapsible: 'bottom',
-            },
-          }}
-          ref={bannerRef}
-        />
       </ScrollView>
     </SafeAreaView>
   );

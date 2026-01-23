@@ -67,18 +67,6 @@ const useTemperatureConverter = ({
     }
   }, [fromScale, inputValue, toScale]);
 
-  // Intercambiar escalas
-  const swapScales = () => {
-    const tempScale = fromScale;
-    setFromScale(toScale);
-    setToScale(tempScale);
-
-    // Actualizar el valor convertido como nuevo input
-    if (convertedValue !== 0) {
-      setInputValue(convertedValue.toString());
-    }
-  };
-
   // Establecer un valor común
   const setCommonTemperature = (celsiusValue: number, _description: string) => {
     const valueInFromScale = convertTemperature(
@@ -112,7 +100,6 @@ const useTemperatureConverter = ({
     setToScale,
 
     // Funciones
-    swapScales,
     setCommonTemperature,
     reset,
 
