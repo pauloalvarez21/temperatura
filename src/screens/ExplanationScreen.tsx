@@ -386,10 +386,10 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 32,
-    fontWeight: 'bold',
-    color: 'white',
+    color: 'rgba(255, 255, 255)',
     textAlign: 'center',
     marginBottom: 10,
+    lineHeight: 24,
     fontFamily: 'ChowFun-Regular',
   },
   subtitleText: {
@@ -398,14 +398,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 15,
     lineHeight: 24,
-    fontFamily: 'ChowFun-Regular',
   },
   introText: {
     fontSize: 15,
     color: 'rgba(255, 255, 255, 0.85)',
     textAlign: 'center',
     lineHeight: 22,
-    fontStyle: 'italic',
   },
   introHeroCard: {
     marginBottom: 25,
@@ -428,7 +426,6 @@ const styles = StyleSheet.create({
   },
   introHeroTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
     marginBottom: 12,
@@ -445,7 +442,6 @@ const styles = StyleSheet.create({
   },
   sectionHeaderTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: '#333',
     marginBottom: 5,
     fontFamily: 'ChowFun-Regular',
@@ -496,7 +492,6 @@ const styles = StyleSheet.create({
   },
   scaleName: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#333',
     marginBottom: 4,
     fontFamily: 'ChowFun-Regular',
@@ -778,7 +773,6 @@ const styles = StyleSheet.create({
   },
   curiositiesTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#333',
     fontFamily: 'ChowFun-Regular',
   },
@@ -835,7 +829,6 @@ const styles = StyleSheet.create({
   },
   finalNoteTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#00838F',
     fontFamily: 'ChowFun-Regular',
   },
@@ -856,6 +849,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#666',
     textAlign: 'center',
+    fontFamily: 'ChowFun-Regular',
     marginBottom: 8,
   },
   footerSubtext: {
@@ -863,12 +857,13 @@ const styles = StyleSheet.create({
     color: '#999',
     textAlign: 'center',
     marginBottom: 8,
-    fontStyle: 'italic',
+    fontFamily: 'ChowFun-Regular',
   },
   footerVersion: {
     fontSize: 11,
     color: '#BBB',
     textAlign: 'center',
+    fontFamily: 'ChowFun-Regular',
   },
   bottomSpacer: {
     height: 20,

@@ -203,7 +203,7 @@ const ConvertionScreen = () => {
               </View>
             </View>
 
-            {/* Selectores de escala con botón de intercambio */}
+            {/* Selectores de escala */}
             <View style={styles.scalesSection}>
               <View style={styles.scalesGrid}>
                 {renderScaleSelector(
@@ -324,7 +324,6 @@ const styles = StyleSheet.create({
   },
   appName: {
     fontSize: 32,
-    fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
     marginBottom: 12,
@@ -335,7 +334,6 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.95)',
     textAlign: 'center',
     fontStyle: 'italic',
-    fontFamily: 'ChowFun-Regular',
   },
   mainCard: {
     marginBottom: 25,
@@ -557,7 +555,7 @@ const styles = StyleSheet.create({
   },
   resultValue: {
     fontSize: 42,
-    fontWeight: 'bold',
+    fontFamily: 'ChowFun-Regular',
     color: '#2196F3',
     marginRight: 10,
   },
@@ -584,7 +582,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
     marginBottom: 15,
-    fontWeight: '500',
+    fontFamily: 'ChowFun-Regular',
   },
   decimalButtons: {
     flexDirection: 'row',
@@ -655,8 +653,8 @@ const styles = StyleSheet.create({
   },
   resetButtonText: {
     color: '#D32F2F',
-    fontWeight: 'bold',
     fontSize: 16,
+    fontFamily: 'ChowFun-Regular',
   },
   footer: {
     alignItems: 'center',
@@ -669,18 +667,20 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
     marginBottom: 8,
+    fontFamily: 'ChowFun-Regular',
   },
   footerSubtext: {
     fontSize: 12,
     color: '#999',
     textAlign: 'center',
     marginBottom: 8,
-    fontStyle: 'italic',
+    fontFamily: 'ChowFun-Regular',
   },
   footerVersion: {
     fontSize: 11,
     color: '#BBB',
     textAlign: 'center',
+    fontFamily: 'ChowFun-Regular',
   },
   bottomSpacer: {
     height: 20,

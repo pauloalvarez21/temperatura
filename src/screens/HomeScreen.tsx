@@ -374,7 +374,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
     lineHeight: 22,
-    fontFamily: 'ChowFun-Regular',
   },
   heroDescription: {
     fontSize: 14,
@@ -413,7 +412,6 @@ const styles = StyleSheet.create({
   },
   actionButtonTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
     color: 'white',
     marginBottom: 4,
     fontFamily: 'ChowFun-Regular',
@@ -440,7 +438,6 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontSize: 22,
-    fontWeight: 'bold',
     color: '#333',
     marginBottom: 20,
     textAlign: 'center',
@@ -577,7 +574,6 @@ const styles = StyleSheet.create({
   },
   ctaTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: 'white',
     marginBottom: 12,
     textAlign: 'center',
@@ -603,7 +599,7 @@ const styles = StyleSheet.create({
   },
   ctaButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'ChowFun-Regular',
     color: '#2196F3',
   },
   footer: {
@@ -624,7 +620,6 @@ const styles = StyleSheet.create({
     color: '#999',
     textAlign: 'center',
     marginBottom: 8,
-    fontStyle: 'italic',
     fontFamily: 'ChowFun-Regular',
   },
   footerVersion: {
