@@ -35,14 +35,11 @@ const SplashScreen = ({ onFinish }: SplashScreenProps) => {
         }),
       ]),
       // 2. Espera: Se mantiene visible
-      Animated.delay(2000),
-      // 3. Salida: Desaparece
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 500,
-        useNativeDriver: true,
-      }),
-    ]).start(() => onFinish());
+      Animated.delay(1500),
+    ]).start(() => {
+      // Notificar que el splash está listo para ocultarse
+      onFinish();
+    });
   }, [fadeAnim, onFinish, scaleAnim]);
 
   return (
@@ -72,7 +69,7 @@ const SplashScreen = ({ onFinish }: SplashScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#2196F3', // Color principal de tu app
+    backgroundColor: '#2196F3',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -89,6 +86,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#ffffff',
+    fontFamily: 'ChowFun-Regular',
   },
 });
 

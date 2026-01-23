@@ -390,6 +390,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginBottom: 10,
+    fontFamily: 'ChowFun-Regular',
   },
   subtitleText: {
     fontSize: 18,
@@ -397,6 +398,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 15,
     lineHeight: 24,
+    fontFamily: 'ChowFun-Regular',
   },
   introText: {
     fontSize: 15,
@@ -430,6 +432,7 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginBottom: 12,
+    fontFamily: 'ChowFun-Regular',
   },
   introHeroText: {
     fontSize: 16,
@@ -445,6 +448,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 5,
+    fontFamily: 'ChowFun-Regular',
   },
   sectionHeaderSubtitle: {
     fontSize: 14,
@@ -495,6 +499,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 4,
+    fontFamily: 'ChowFun-Regular',
   },
   inventor: {
     fontSize: 15,
@@ -516,6 +521,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     marginBottom: 12,
+    fontFamily: 'ChowFun-Regular',
   },
   pointItem: {
     flexDirection: 'row',
@@ -774,6 +780,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: '#333',
+    fontFamily: 'ChowFun-Regular',
   },
   curiositiesGrid: {
     flexDirection: 'row',
@@ -830,6 +837,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: '#00838F',
+    fontFamily: 'ChowFun-Regular',
   },
   finalNoteText: {
     fontSize: 15,

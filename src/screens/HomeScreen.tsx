@@ -363,7 +363,6 @@ const styles = StyleSheet.create({
   },
   heroTitle: {
     fontSize: 32,
-    fontWeight: 'bold',
     color: 'white',
     textAlign: 'center',
     marginBottom: 12,
@@ -375,6 +374,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 16,
     lineHeight: 22,
+    fontFamily: 'ChowFun-Regular',
   },
   heroDescription: {
     fontSize: 14,
@@ -416,6 +416,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 4,
+    fontFamily: 'ChowFun-Regular',
   },
   actionButtonSubtitle: {
     fontSize: 14,
@@ -443,6 +444,7 @@ const styles = StyleSheet.create({
     color: '#333',
     marginBottom: 20,
     textAlign: 'center',
+    fontFamily: 'ChowFun-Regular',
   },
   featuresScrollView: {
     marginHorizontal: -16,
@@ -482,6 +484,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center',
+    fontFamily: 'ChowFun-Regular',
   },
   featureDescription: {
     fontSize: 13,
@@ -578,6 +581,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginBottom: 12,
     textAlign: 'center',
+    fontFamily: 'ChowFun-Regular',
   },
   ctaDescription: {
     fontSize: 14,
@@ -613,6 +617,7 @@ const styles = StyleSheet.create({
     color: '#666',
     textAlign: 'center',
     marginBottom: 8,
+    fontFamily: 'ChowFun-Regular',
   },
   footerSubtext: {
     fontSize: 11,
@@ -620,11 +625,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 8,
     fontStyle: 'italic',
+    fontFamily: 'ChowFun-Regular',
   },
   footerVersion: {
     fontSize: 10,
     color: '#BBB',
     textAlign: 'center',
+    fontFamily: 'ChowFun-Regular',
   },
   bottomSpacer: {
     height: 20,

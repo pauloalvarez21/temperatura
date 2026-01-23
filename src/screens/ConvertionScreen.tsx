@@ -328,12 +328,14 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     marginBottom: 12,
+    fontFamily: 'ChowFun-Regular',
   },
   appTagline: {
     fontSize: 14,
     color: 'rgba(255, 255, 255, 0.95)',
     textAlign: 'center',
     fontStyle: 'italic',
+    fontFamily: 'ChowFun-Regular',
   },
   mainCard: {
     marginBottom: 25,
@@ -354,6 +356,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     marginBottom: 12,
+    fontFamily: 'ChowFun-Regular',
   },
   inputWrapper: {
     position: 'relative',
@@ -433,6 +436,7 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
+    fontFamily: 'ChowFun-Regular',
   },
   scaleInfo: {
     flexDirection: 'row',
@@ -460,11 +464,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#2196F3',
     marginBottom: 4,
+    fontFamily: 'ChowFun-Regular',
   },
   scaleSymbol: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#FF9800',
+    fontFamily: 'ChowFun-Regular',
   },
   scaleDescription: {
     fontSize: 13,
@@ -532,6 +538,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#333',
     marginBottom: 15,
+    fontFamily: 'ChowFun-Regular',
   },
   resultCard: {
     backgroundColor: '#F0F7FF',
