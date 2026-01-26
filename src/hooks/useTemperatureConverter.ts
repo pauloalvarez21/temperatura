@@ -1,3 +1,10 @@
+/**
+ * @file useTemperatureConverter.ts
+ * @description Hook personalizado para gestionar la lógica de conversión de temperaturas.
+ * Proporciona estados para los valores de entrada, escalas seleccionadas, resultados y errores,
+ * además de utilidades para formatear y obtener información de las escalas.
+ */
+
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
@@ -7,12 +14,26 @@ import {
   temperatureScales,
 } from '../utils/temperatureConverter';
 
+/**
+ * Propiedades de configuración inicial para el hook.
+ * @interface UseTemperatureConverterProps
+ * @property {number} [initialValue] - Valor numérico inicial (por defecto 0).
+ * @property {TemperatureScale} [initialFromScale] - Escala de origen inicial (por defecto 'celsius').
+ * @property {TemperatureScale} [initialToScale] - Escala de destino inicial (por defecto 'fahrenheit').
+ */
 interface UseTemperatureConverterProps {
   initialValue?: number;
   initialFromScale?: TemperatureScale;
   initialToScale?: TemperatureScale;
 }
 
+/**
+ * Hook que encapsula la lógica de validación, conversión y formateo de temperaturas.
+ *
+ * @param {UseTemperatureConverterProps} props - Propiedades de inicialización.
+ * @returns {Object} Un objeto con estados (inputValue, fromScale, toScale, convertedValue, error) 
+ *                   y funciones controladoras (setInputValue, setFromScale, setToScale, reset, formatResult, getScaleInfo, allScales).
+ */
 const useTemperatureConverter = ({
   initialValue = 0,
   initialFromScale = 'celsius',

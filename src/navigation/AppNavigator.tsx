@@ -1,3 +1,10 @@
+/**
+ * @file AppNavigator.tsx
+ * @description Configuración central de la navegación de la aplicación.
+ * Define el contenedor principal y el navegador de pestañas (Tab Navigator)
+ * junto con la personalización visual de los íconos y etiquetas.
+ */
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -22,12 +29,24 @@ const iconMapping: Record<keyof RootTabParamList, ImageSourcePropType> = {
   Explanation: require('../assets/images/info.png'),
 };
 
-// Componente reutilizable para el ícono de la pestaña
+/**
+ * Propiedades para el componente TabIcon.
+ * @interface TabIconProps
+ * @property {boolean} focused - Indica si la pestaña está activa.
+ * @property {ImageSourcePropType} source - Fuente de la imagen del ícono.
+ */
 interface TabIconProps {
   focused: boolean;
   source: ImageSourcePropType;
 }
 
+/**
+ * Componente funcional que renderiza el ícono de una pestaña con efectos visuales.
+ * Aplica una reducción de opacidad cuando la pestaña no está seleccionada.
+ *
+ * @param {TabIconProps} props - Propiedades del ícono.
+ * @returns {React.JSX.Element} Elemento de imagen estilizado.
+ */
 const TabIcon: React.FC<TabIconProps> = ({ focused, source }) => {
   return (
     <View style={styles.tabIconContainer}>
@@ -43,6 +62,13 @@ const TabIcon: React.FC<TabIconProps> = ({ focused, source }) => {
   );
 };
 
+/**
+ * Componente principal de navegación que encapsula toda la estructura de la app.
+ * Configura un navegador de pestañas inferior con tres secciones principales:
+ * Inicio, Conversión y Explicación.
+ *
+ * @returns {React.JSX.Element} Contenedor de navegación configurado.
+ */
 const AppNavigator = () => {
   const { t } = useTranslation();
 

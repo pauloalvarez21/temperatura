@@ -1,3 +1,9 @@
+/**
+ * @file temperatureConverter.ts
+ * @description Utilidades para el cálculo y formateo de conversiones de temperatura.
+ * Soporta múltiples escalas termométricas y utiliza Celsius como eje central de conversión.
+ */
+
 // Tipos para las escalas de temperatura
 export type TemperatureScale =
   | 'kelvin'
@@ -61,7 +67,15 @@ export const temperatureScales: Record<TemperatureScale, TemperatureScaleInfo> =
     },
   };
 
-// Función principal de conversión
+/**
+ * Convierte un valor de temperatura de una escala a otra.
+ * Implementa una estrategia de "hub" usando Celsius como paso intermedio.
+ *
+ * @param {number} value - El valor numérico a convertir.
+ * @param {TemperatureScale} fromScale - Escala de origen.
+ * @param {TemperatureScale} toScale - Escala de destino.
+ * @returns {number} El valor convertido.
+ */
 export const convertTemperature = (
   value: number,
   fromScale: TemperatureScale,
@@ -122,7 +136,14 @@ const fromCelsius = (value: number, scale: TemperatureScale): number => {
   }
 };
 
-// Función para formatear el resultado
+/**
+ * Formatea un valor numérico de temperatura con su símbolo correspondiente.
+ *
+ * @param {number} value - El valor a formatear.
+ * @param {TemperatureScale} scale - La escala para identificar el símbolo.
+ * @param {number} [decimals=2] - Cantidad de decimales a mostrar.
+ * @returns {string} Cadena formateada (ej: "25.00 °C").
+ */
 export const formatTemperature = (
   value: number,
   scale: TemperatureScale,

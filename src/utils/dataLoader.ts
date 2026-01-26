@@ -1,3 +1,9 @@
+/**
+ * @file dataLoader.ts
+ * @description Funciones para cargar y transformar datos estáticos de escalas de temperatura.
+ * Gestiona la selección de archivos JSON basados en el idioma actual del sistema/app.
+ */
+
 import i18n from 'i18next';
 
 import temperatureScalesES from '../data/temperatureScales.json';
@@ -5,7 +11,11 @@ import temperatureScalesEN from '../data/temperatureScales.en.json';
 
 import { TemperatureScalesData } from '../types/temperatureScales';
 
-// Cargar datos del JSON según idioma
+/**
+ * Carga el conjunto de datos de escalas de temperatura apropiado para el idioma actual.
+ *
+ * @returns {TemperatureScalesData} Datos completos de las escalas, incluyendo historia y curiosidades.
+ */
 export const loadTemperatureScalesData = (): TemperatureScalesData => {
   const language = i18n.language;
 
@@ -16,7 +26,13 @@ export const loadTemperatureScalesData = (): TemperatureScalesData => {
   return temperatureScalesES as TemperatureScalesData;
 };
 
-// Función para convertir temperatura a diferentes escalas
+/**
+ * Genera un objeto con la representación en texto de una temperatura en todas las escalas soportadas.
+ * Útil para tablas comparativas.
+ *
+ * @param {number} celsius - Valor base en Celsius para realizar los cálculos.
+ * @returns {Record<string, string>} Mapa donde la clave es el ID de la escala y el valor es el texto formateado.
+ */
 export const convertToAllScales = (celsius: number): Record<string, string> => {
   return {
     kelvin: `${(celsius + 273.15).toFixed(1)} K`,

@@ -1,3 +1,9 @@
+/**
+ * @file SplashScreen.tsx
+ * @description Pantalla de bienvenida animada de la aplicación.
+ * Implementa animaciones de entrada (fade-in y escala) antes de transicionar a la app principal.
+ */
+
 import React, { useEffect, useRef } from 'react';
 import {
   View,
@@ -9,10 +15,22 @@ import {
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
+/**
+ * Propiedades para el componente SplashScreen.
+ * @interface SplashScreenProps
+ * @property {() => void} onFinish - Callback llamado cuando la animación de bienvenida termina.
+ */
 interface SplashScreenProps {
   onFinish: () => void;
 }
 
+/**
+ * Componente que muestra el logo y título de la app con una secuencia de animaciones.
+ * Utiliza Animated para gestionar la opacidad y el tamaño del contenido.
+ *
+ * @param {SplashScreenProps} props - Propiedades del splash.
+ * @returns {React.JSX.Element} Contenedor animado a pantalla completa.
+ */
 const SplashScreen = ({ onFinish }: SplashScreenProps) => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.5)).current;
