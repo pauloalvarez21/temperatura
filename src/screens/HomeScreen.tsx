@@ -634,8 +634,8 @@ const styles = StyleSheet.create({
     fontFamily: 'ChowFun-Regular',
   },
   footerLogo: {
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
     marginTop: 16,
     resizeMode: 'contain',
     borderRadius: 30,
