@@ -14,6 +14,7 @@ import {
   Dimensions,
   TouchableOpacity,
   Platform,
+  Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -349,6 +350,10 @@ const ExplanationScreen: React.FC<ExplanationScreenProps> = () => {
           <Text style={styles.footerText}>{t('home.footer.rights')}</Text>
           <Text style={styles.footerSubtext}>{t('home.footer.tool')}</Text>
           <Text style={styles.footerVersion}>v1.0.0</Text>
+          <Image
+            source={require('../assets/images/gaelectronica.png')}
+            style={styles.footerLogo}
+          />
         </View>
 
         <View style={styles.bottomSpacer} />
@@ -864,6 +869,13 @@ const styles = StyleSheet.create({
     color: '#BBB',
     textAlign: 'center',
     fontFamily: 'ChowFun-Regular',
+  },
+  footerLogo: {
+    width: 200,
+    height: 200,
+    marginTop: 16,
+    resizeMode: 'contain',
+    borderRadius: 30,
   },
   bottomSpacer: {
     height: 20,
